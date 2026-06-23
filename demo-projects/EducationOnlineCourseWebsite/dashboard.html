@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EduPro Dashboards – Student & Teacher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ========= RESET ========= */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    :root {
+      --primary: #4f46e5;
+      --primary-soft: #6366f1;
+      --primary-dark: #3730a3;
+      --accent: #f59e0b;
+      --accent-green: #10b981;
+      --bg-soft: #020617;
+      --bg-card: #020617;
+      --bg-elevated: #020617;
+      --border-subtle: #1f2937;
+      --text-muted: #9ca3af;
+      --danger: #ef4444;
+      --radius-lg: 18px;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-soft: 0 20px 60px rgba(15, 23, 42, 0.7);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ========= SCROLLBAR ========= */
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: #020617; }
+    ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 999px; }
+
+    /* ========= LAYOUT ========= */
+    .layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* ========= SIDEBAR ========= */
+    .sidebar {
+      background: radial-gradient(circle at top left, rgba(79,70,229,0.25), transparent 55%),
+                  #020617;
+      border-right: 1px solid var(--border-subtle);
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f9fafb;
+      box-shadow: 0 10px 25px rgba(55,48,163,0.8);
+    }
+    .brand-text {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+    }
+    .brand-text span { color: var(--primary); }
+
+    .role-switch {
+      margin-top: 8px;
+      background: #020617;
+      border-radius: 999px;
+      padding: 4px;
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 4px;
+    }
+    .role-pill {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 999px;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .role-pill.active {
+      background: radial-gradient(circle at top left, #4f46e5, #312e81);
+      color: #f9fafb;
+      box-shadow: 0 8px 24px rgba(79,70,229,0.65);
+    }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6b7280;
+      margin: 18px 4px 8px;
+    }
+
+    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #9ca3af;
+      position: relative;
+      transition: var(--transition);
+    }
+    .nav-item i {
+      width: 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .nav-item span.badge {
+      margin-left: auto;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(79,70,229,0.15);
+      color: #c4b5fd;
+    }
+    .nav-item:hover {
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+    }
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(79,70,229,0.25), transparent);
+      color: #e5e7eb;
+    }
+    .nav-item.active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #4f46e5, #ec4899);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .user-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-avatar-sm {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, #f97316, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 700;
+      color: white;
+    }
+    .user-mini-text h4 {
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .user-mini-text p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .logout-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #020617;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .logout-btn:hover {
+      background: rgba(239,68,68,0.12);
+      color: var(--danger);
+      border-color: rgba(239,68,68,0.4);
+    }
+
+    /* ========= TOPBAR ========= */
+    .main {
+      background:
+        radial-gradient(circle at top left, rgba(79,70,229,0.25), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(8,47,73,0.4), transparent 55%),
+        #020617;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(15,23,42,0.92), rgba(15,23,42,0.88));
+      border-bottom: 1px solid rgba(15,23,42,0.8);
+    }
+    .topbar-inner {
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .page-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .page-title span.tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(55,65,81,0.8);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .topbar-search {
+      position: relative;
+      width: 260px;
+      max-width: 100%;
+    }
+    .topbar-search input {
+      width: 100%;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid #111827;
+      padding: 9px 30px 9px 30px;
+      font-size: 13px;
+      color: #e5e7eb;
+      outline: none;
+      transition: var(--transition);
+    }
+    .topbar-search i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .topbar-search input::placeholder { color: #6b7280; }
+    .topbar-search input:focus {
+      border-color: rgba(79,70,229,0.7);
+      box-shadow: 0 0 0 1px rgba(79,70,229,0.5);
+      background: rgba(15,23,42,0.95);
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .top-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      background: rgba(15,23,42,0.8);
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    .top-icon-btn:hover {
+      border-color: rgba(79,70,229,0.6);
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.95);
+    }
+    .top-icon-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: #22c55e;
+      border: 2px solid #020617;
+    }
+    .top-avatar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 6px 3px 3px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid #111827;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .top-avatar:hover {
+      border-color: rgba(79,70,229,0.7);
+      box-shadow: 0 4px 20px rgba(15,23,42,0.9);
+    }
+    .top-avatar-img {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, #22c55e, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+    }
+    .top-avatar-text {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+    .top-avatar-text span {
+      display: block;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    /* ========= CONTENT WRAPPER ========= */
+    .content {
+      padding: 18px 22px 24px;
+      flex: 1;
+      overflow: auto;
+    }
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0,1fr));
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(148,163,184,0.06), transparent 55%),
+                  #020617;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 16px;
+      box-shadow: 0 16px 40px rgba(15,23,42,0.8);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill-soft {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.92);
+      border: 1px solid rgba(55,65,81,0.8);
+      color: #9ca3af;
+    }
+    .card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ========= KPI CARDS ========= */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4,minmax(0,1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .kpi-card {
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top left, rgba(79,70,229,0.12), transparent 60%),
+                  rgba(15,23,42,0.9);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid #1d2430;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #c4b5fd;
+    }
+    .kpi-label { font-size: 11px; color: #9ca3af; }
+    .kpi-value {
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .kpi-trend {
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kpi-trend span {
+      padding: 1px 5px;
+      border-radius: 999px;
+      font-size: 10px;
+    }
+    .trend-up { background: rgba(16,185,129,0.18); color: #bbf7d0; }
+    .trend-down { background: rgba(239,68,68,0.15); color: #fecaca; }
+
+    /* ========= PROGRESS BARS ========= */
+    .progress-row { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+    .progress-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+    }
+    .progress-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .progress-title {
+      display: flex;
+      justify-content: space-between;
+      color: #e5e7eb;
+    }
+    .progress-bar {
+      position: relative;
+      height: 6px;
+      border-radius: 999px;
+      background: #020617;
+      overflow: hidden;
+      border: 1px solid #111827;
+    }
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg,#4f46e5,#22c55e);
+    }
+
+    /* ========= COURSE LIST (STUDENT) ========= */
+    .course-list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .course-row {
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 8px 9px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid #111827;
+    }
+    .course-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: #f9fafb;
+    }
+    .ci-1 { background: linear-gradient(135deg,#4f46e5,#6366f1); }
+    .ci-2 { background: linear-gradient(135deg,#06b6d4,#0ea5e9); }
+    .ci-3 { background: linear-gradient(135deg,#ec4899,#f97316); }
+
+    .course-main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .course-name {
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .course-meta-line {
+      display: flex;
+      gap: 10px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .course-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    .course-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid #111827;
+      color: #a5b4fc;
+    }
+    .course-btn {
+      font-size: 10px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(90deg,#4f46e5,#6366f1);
+      color: #f9fafb;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+    .course-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(55,48,163,0.9);
+    }
+
+    /* ========= UPCOMING SESSIONS / CALENDAR ========= */
+    .session-list, .class-list {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .session-row, .class-row {
+      display: grid;
+      grid-template-columns: auto minmax(0,1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 9px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.97);
+      border: 1px solid #111827;
+    }
+    .session-tag {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(79,70,229,0.12);
+      color: #a5b4fc;
+      border: 1px solid rgba(79,70,229,0.4);
+    }
+    .session-time {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .chip-status {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(16,185,129,0.15);
+      color: #bbf7d0;
+      border: 1px solid rgba(16,185,129,0.5);
+    }
+    .chip-status.red {
+      background: rgba(239,68,68,0.15);
+      color: #fecaca;
+      border-color: rgba(239,68,68,0.6);
+    }
+
+    /* ========= TEACHER CARDS ========= */
+    .teacher-metric-row {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 8px;
+    }
+    .teacher-metric {
+      border-radius: 12px;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid #111827;
+      padding: 8px 9px;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .tm-label { color: var(--text-muted); }
+    .tm-value { font-weight: 600; font-size: 13px; }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 11px;
+    }
+    .table thead {
+      background: rgba(15,23,42,0.96);
+    }
+    .table th,
+    .table td {
+      padding: 7px 6px;
+      text-align: left;
+      border-bottom: 1px solid #111827;
+      white-space: nowrap;
+    }
+    .table th {
+      font-weight: 600;
+      color: #9ca3af;
+      font-size: 10px;
+    }
+    .table tr:last-child td { border-bottom: none; }
+    .pill-grade {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(16,185,129,0.1);
+      color: #bbf7d0;
+      border: 1px solid rgba(16,185,129,0.5);
+    }
+    .pill-grade.red {
+      background: rgba(239,68,68,0.12);
+      color: #fecaca;
+      border-color: rgba(239,68,68,0.6);
+    }
+
+    /* ========= TABS (STUDENT/TEACHER VIEW) ========= */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ========= TAGS & BADGES ========= */
+    .label-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid #111827;
+      background: rgba(15,23,42,0.95);
+      color: #9ca3af;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .label-pill i { font-size: 10px; color: #4ade80; }
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: 70px minmax(0,1fr);
+      }
+      .sidebar {
+        padding: 14px 10px;
+      }
+      .brand-text { display: none; }
+      .role-switch { display: none; }
+      .sidebar-section-title { display: none; }
+      .nav-item span.label { display: none; }
+      .sidebar-footer { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: minmax(0,1fr); }
+      .sidebar { display: none; }
+      .topbar-inner { flex-wrap: wrap; }
+      .topbar-left { width: 100%; justify-content: space-between; }
+      .topbar-search { width: 100%; order: 3; }
+      .kpi-row { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ========= SIDEBAR ========= -->
+  <aside class="sidebar">
+    <div>
+      <div class="brand">
+        <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="brand-text">Edu<span>Pro</span></div>
+      </div>
+      <div class="role-switch">
+        <div class="role-pill active" id="pillStudent" onclick="switchRole('student')">
+          <i class="fas fa-user-graduate"></i> Student
+        </div>
+        <div class="role-pill" id="pillTeacher" onclick="switchRole('teacher')">
+          <i class="fas fa-chalkboard-teacher"></i> Teacher
+        </div>
+      </div>
+
+      <div class="sidebar-section-title">Student</div>
+      <ul class="nav-list" id="navStudent">
+        <li class="nav-item active">
+          <i class="fas fa-house"></i>
+          <span class="label">Overview</span>
+          <span class="badge">Today</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-book-open"></i>
+          <span class="label">My Courses</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-clipboard-check"></i>
+          <span class="label">Assignments</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-ranking-star"></i>
+          <span class="label">Grades & Progress</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-calendar-days"></i>
+          <span class="label">Schedule</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-comments"></i>
+          <span class="label">Discussions</span>
+        </li>
+      </ul>
+
+      <div class="sidebar-section-title">Teacher</div>
+      <ul class="nav-list" id="navTeacher">
+        <li class="nav-item active">
+          <i class="fas fa-gauge-high"></i>
+          <span class="label">Teaching Overview</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-chalkboard"></i>
+          <span class="label">My Classes</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-clipboard-list"></i>
+          <span class="label">Assignments & Quizzes</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-users-line"></i>
+          <span class="label">Students</span>
+        </li>
+        <li class="nav-item">
+          <i class="fas fa-chart-line"></i>
+          <span class="label">Analytics</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-mini">
+        <div class="user-avatar-sm" id="footerAvatar">S</div>
+        <div class="user-mini-text">
+          <h4 id="footerName">Riya Sharma</h4>
+          <p id="footerRole">Student · B.Tech CSE</p>
+        </div>
+      </div>
+      <button class="logout-btn" title="Log out">
+        <i class="fas fa-arrow-right-from-bracket"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========= MAIN ========= -->
+  <main class="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="topbar-left">
+          <div class="page-title" id="pageTitle">
+            <i class="fas fa-user-graduate"></i>
+            <span>Student Dashboard</span>
+            <span class="tag">Today</span>
+          </div>
+        </div>
+        <div class="topbar-search">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search courses, classes or students…" />
+        </div>
+        <div class="topbar-right">
+          <button class="top-icon-btn" title="Notifications">
+            <i class="fas fa-bell"></i>
+            <span class="top-icon-badge"></span>
+          </button>
+          <button class="top-icon-btn" title="Dark mode">
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="top-avatar">
+            <div class="top-avatar-img" id="topAvatar">RS</div>
+            <div class="top-avatar-text">
+              <span id="topName">Riya Sharma</span>
+              <small id="topRole">Student</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <section class="content">
+      <!-- ===== STUDENT VIEW ===== -->
+      <div class="view active" id="viewStudent">
+        <!-- KPIs -->
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-book-open"></i></div>
+            <div class="kpi-label">Enrolled Courses</div>
+            <div class="kpi-value">6</div>
+            <div class="kpi-trend">
+              <span class="trend-up"><i class="fas fa-arrow-up"></i> +1</span>
+              <span>This week</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+            <div class="kpi-label">Hours Learned</div>
+            <div class="kpi-value">42h</div>
+            <div class="kpi-trend">
+              <span class="trend-up"><i class="fas fa-arrow-up"></i> +6h</span>
+              <span>vs last week</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-clipboard-check"></i></div>
+            <div class="kpi-label">Assignments Due</div>
+            <div class="kpi-value">3</div>
+            <div class="kpi-trend">
+              <span class="trend-down"><i class="fas fa-arrow-down"></i> -2</span>
+              <span>Pending</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-fire"></i></div>
+            <div class="kpi-label">Streak</div>
+            <div class="kpi-value">14 days</div>
+            <div class="kpi-trend">
+              <span class="trend-up"><i class="fas fa-arrow-up"></i> +4</span>
+              <span>Consistent</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAIN ROW -->
+        <div class="grid grid-3">
+          <!-- Left: Progress -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  <span>My Progress</span>
+                  <span class="pill-soft"><i class="fas fa-sparkles"></i> Semester 4</span>
+                </div>
+                <div class="card-sub">Track how close you are to completing each course.</div>
+              </div>
+              <span class="label-pill"><i class="fas fa-circle-dot"></i> On track</span>
+            </div>
+
+            <div class="progress-row">
+              <div class="progress-item">
+                <div class="progress-info">
+                  <div class="progress-title">
+                    <span>Full-Stack Web Development</span>
+                    <span>72%</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-info">
+                  <div class="progress-title">
+                    <span>Data Structures & Algorithms</span>
+                    <span>54%</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:54%"></div></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-info">
+                  <div class="progress-title">
+                    <span>UI/UX Design with Figma</span>
+                    <span>45%</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>
+                </div>
+              </div>
+              <div class="progress-item">
+                <div class="progress-info">
+                  <div class="progress-title">
+                    <span>Machine Learning Fundamentals</span>
+                    <span>88%</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:88%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Center: Continue Learning -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  <span>Continue Learning</span>
+                </div>
+                <div class="card-sub">Jump back into your active courses.</div>
+              </div>
+            </div>
+
+            <div class="course-list">
+              <div class="course-row">
+                <div class="course-icon ci-1">⚡</div>
+                <div class="course-main">
+                  <div class="course-name">Full-Stack Web Development Bootcamp</div>
+                  <div class="course-meta-line">
+                    <span><i class="fas fa-layer-group"></i> Module 4 · APIs</span>
+                    <span><i class="fas fa-clock"></i> 32 / 45 lessons</span>
+                  </div>
+                  <div class="progress-bar" style="margin-top:4px">
+                    <div class="progress-fill" style="width:72%"></div>
+                  </div>
+                </div>
+                <div class="course-actions">
+                  <span class="course-pill">72% done</span>
+                  <button class="course-btn"><i class="fas fa-play"></i> Resume</button>
+                </div>
+              </div>
+
+              <div class="course-row">
+                <div class="course-icon ci-2">🤖</div>
+                <div class="course-main">
+                  <div class="course-name">Machine Learning & AI with Python</div>
+                  <div class="course-meta-line">
+                    <span><i class="fas fa-layer-group"></i> Module 6 · Models</span>
+                    <span><i class="fas fa-clock"></i> 40 / 45 lessons</span>
+                  </div>
+                  <div class="progress-bar" style="margin-top:4px">
+                    <div class="progress-fill" style="width:88%"></div>
+                  </div>
+                </div>
+                <div class="course-actions">
+                  <span class="course-pill">88% done</span>
+                  <button class="course-btn"><i class="fas fa-play"></i> Resume</button>
+                </div>
+              </div>
+
+              <div class="course-row">
+                <div class="course-icon ci-3">🎨</div>
+                <div class="course-main">
+                  <div class="course-name">UI/UX Design Mastery with Figma</div>
+                  <div class="course-meta-line">
+                    <span><i class="fas fa-layer-group"></i> Module 2 · Wireframes</span>
+                    <span><i class="fas fa-clock"></i> 12 / 32 lessons</span>
+                  </div>
+                  <div class="progress-bar" style="margin-top:4px">
+                    <div class="progress-fill" style="width:45%"></div>
+                  </div>
+                </div>
+                <div class="course-actions">
+                  <span class="course-pill">45% done</span>
+                  <button class="course-btn"><i class="fas fa-play"></i> Resume</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Upcoming sessions -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  <span>Today’s Schedule</span>
+                </div>
+                <div class="card-sub">Live classes & deadlines.</div>
+              </div>
+              <span class="label-pill"><i class="fas fa-bolt"></i> 2 live now</span>
+            </div>
+
+            <div class="session-list">
+              <div class="session-row">
+                <div>
+                  <div class="session-tag">Live Class</div>
+                </div>
+                <div>
+                  <div style="font-size:12px;font-weight:600">Data Structures – Trees & Graphs</div>
+                  <div class="session-time">10:00 AM – 11:30 AM · with Rahul Sharma</div>
+                </div>
+                <div>
+                  <div class="chip-status">Join</div>
+                </div>
+              </div>
+
+              <div class="session-row">
+                <div>
+                  <div class="session-tag" style="background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.6);color:#fbbf24">Assignment</div>
+                </div>
+                <div>
+                  <div style="font-size:12px;font-weight:600">ML Assignment 3 – Classification</div>
+                  <div class="session-time">Due today · 11:59 PM</div>
+                </div>
+                <div>
+                  <div class="chip-status red">Pending</div>
+                </div>
+              </div>
+
+              <div class="session-row">
+                <div>
+                  <div class="session-tag" style="background:rgba(34,197,94,0.18);border-color:rgba(34,197,94,0.6);color:#bbf7d0">Quiz</div>
+                </div>
+                <div>
+                  <div style="font-size:12px;font-weight:600">UI Design Basics · Quiz 1</div>
+                  <div class="session-time">Tomorrow · 5:00 PM</div>
+                </div>
+                <div>
+                  <div class="chip-status">Prepare</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TEACHER VIEW ===== -->
+      <div class="view" id="viewTeacher">
+        <!-- KPIs -->
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-users"></i></div>
+            <div class="kpi-label">Active Students</div>
+            <div class="kpi-value">128</div>
+            <div class="kpi-trend">
+              <span class="trend-up"><i class="fas fa-arrow-up"></i> +12</span>
+              <span>this month</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-chalkboard"></i></div>
+            <div class="kpi-label">Classes Today</div>
+            <div class="kpi-value">4</div>
+            <div class="kpi-trend">
+              <span class="trend-up"><i class="fas fa-arrow-up"></i> +1</span>
+              <span>vs yesterday</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-clipboard-list"></i></div>
+            <div class="kpi-label">Pending Reviews</div>
+            <div class="kpi-value">18</div>
+            <div class="kpi-trend">
+              <span class="trend-down"><i class="fas fa-arrow-down"></i> -6</span>
+              <span>graded this week</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-star"></i></div>
+            <div class="kpi-label">Avg Course Rating</div>
+            <div class="kpi-value">4.9</div>
+            <div class="kpi-trend">
+              <span class="trend-up"><i class="fas fa-arrow-up"></i> +0.1</span>
+              <span>last 30 days</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAIN ROW -->
+        <div class="grid grid-3">
+          <!-- Left: Classes overview -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  <span>My Classes</span>
+                  <span class="pill-soft">Spring 2026</span>
+                </div>
+                <div class="card-sub">Quick summary of classes you teach.</div>
+              </div>
+              <span class="label-pill"><i class="fas fa-plus"></i> New class</span>
+            </div>
+
+            <div class="class-list">
+              <div class="class-row">
+                <div class="course-icon ci-1">JS</div>
+                <div>
+                  <div style="font-size:12px;font-weight:600">Full-Stack Web Development</div>
+                  <div class="course-meta-line">
+                    <span><i class="fas fa-users"></i> 56 students</span>
+                    <span><i class="fas fa-chart-line"></i> Avg grade 82%</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="chip-status">Live now</div>
+                </div>
+              </div>
+
+              <div class="class-row">
+                <div class="course-icon ci-2">ML</div>
+                <div>
+                  <div style="font-size:12px;font-weight:600">Machine Learning Fundamentals</div>
+                  <div class="course-meta-line">
+                    <span><i class="fas fa-users"></i> 44 students</span>
+                    <span><i class="fas fa-chart-line"></i> Avg grade 78%</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="chip-status">Tomorrow</div>
+                </div>
+              </div>
+
+              <div class="class-row">
+                <div class="course-icon ci-3">UX</div>
+                <div>
+                  <div style="font-size:12px;font-weight:600">UI/UX Design Studio</div>
+                  <div class="course-meta-line">
+                    <span><i class="fas fa-users"></i> 28 students</span>
+                    <span><i class="fas fa-chart-line"></i> Avg grade 90%</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="chip-status">Fri</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="teacher-metric-row">
+              <div class="teacher-metric">
+                <span class="tm-label">Overall completion</span>
+                <span class="tm-value">76%</span>
+              </div>
+              <div class="teacher-metric">
+                <span class="tm-label">On-time submissions</span>
+                <span class="tm-value">91%</span>
+              </div>
+              <div class="teacher-metric">
+                <span class="tm-label">At-risk students</span>
+                <span class="tm-value" style="color:#fecaca">7</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Center: Assignments -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  <span>Assignments & Reviews</span>
+                </div>
+                <div class="card-sub">Keep track of what needs grading.</div>
+              </div>
+              <span class="label-pill"><i class="fas fa-bolt"></i> Smart queue</span>
+            </div>
+
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Course</th>
+                <th>Assignment</th>
+                <th>Due</th>
+                <th>Submissions</th>
+                <th>Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Full-Stack Web</td>
+                <td>Project 03 – API Integration</td>
+                <td>Today</td>
+                <td>48 / 56</td>
+                <td><span class="chip-status red">18 to review</span></td>
+              </tr>
+              <tr>
+                <td>ML Fundamentals</td>
+                <td>Assignment 02 – Regression</td>
+                <td>Tomorrow</td>
+                <td>32 / 44</td>
+                <td><span class="chip-status">On track</span></td>
+              </tr>
+              <tr>
+                <td>UI/UX Studio</td>
+                <td>Case Study – E‑commerce app</td>
+                <td>In 3 days</td>
+                <td>9 / 28</td>
+                <td><span class="chip-status">Open</span></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Right: Student performance table -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">
+                  <span>Student Performance</span>
+                </div>
+                <div class="card-sub">Snapshot of key students.</div>
+              </div>
+            </div>
+
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Attendance</th>
+                <th>Grade</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>Amit Mishra</td>
+                <td>Full-Stack Web</td>
+                <td>96%</td>
+                <td><span class="pill-grade">A</span></td>
+              </tr>
+              <tr>
+                <td>Neha Kapoor</td>
+                <td>UI/UX Studio</td>
+                <td>98%</td>
+                <td><span class="pill-grade">A+</span></td>
+              </tr>
+              <tr>
+                <td>Rohan Das</td>
+                <td>ML Fundamentals</td>
+                <td>72%</td>
+                <td><span class="pill-grade red">C</span></td>
+              </tr>
+              <tr>
+                <td>Pooja Singh</td>
+                <td>Full-Stack Web</td>
+                <td>81%</td>
+                <td><span class="pill-grade">B+</span></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</div>
+
+<script>
+  function switchRole(role) {
+    const isStudent = role === 'student';
+
+    document.getElementById('viewStudent').classList.toggle('active', isStudent);
+    document.getElementById('viewTeacher').classList.toggle('active', !isStudent);
+
+    document.getElementById('pillStudent').classList.toggle('active', isStudent);
+    document.getElementById('pillTeacher').classList.toggle('active', !isStudent);
+
+    const pageTitle = document.getElementById('pageTitle');
+    if (isStudent) {
+      pageTitle.innerHTML = '<i class="fas fa-user-graduate"></i><span>Student Dashboard</span><span class="tag">Today</span>';
+      document.getElementById('topAvatar').textContent = 'RS';
+      document.getElementById('topName').textContent = 'Riya Sharma';
+      document.getElementById('topRole').textContent = 'Student';
+      document.getElementById('footerAvatar').textContent = 'S';
+      document.getElementById('footerName').textContent = 'Riya Sharma';
+      document.getElementById('footerRole').textContent = 'Student · B.Tech CSE';
+    } else {
+      pageTitle.innerHTML = '<i class="fas fa-chalkboard-teacher"></i><span>Teacher Dashboard</span><span class="tag">Today</span>';
+      document.getElementById('topAvatar').textContent = 'RS';
+      document.getElementById('topName').textContent = 'Rahul Sharma';
+      document.getElementById('topRole').textContent = 'Instructor';
+      document.getElementById('footerAvatar').textContent = 'T';
+      document.getElementById('footerName').textContent = 'Rahul Sharma';
+      document.getElementById('footerRole').textContent = 'Instructor · Web & ML';
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NexCRM — Business Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* ─── Reset & Base ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0f1117;
+    --surface:   #1a1d27;
+    --surface2:  #22263a;
+    --border:    #2e3248;
+    --accent:    #6c63ff;
+    --accent2:   #00d4aa;
+    --accent3:   #ff6b6b;
+    --accent4:   #ffd166;
+    --text:      #e8eaf6;
+    --text-muted:#8b90b3;
+    --sidebar-w: 240px;
+    --header-h:  64px;
+    --radius:    12px;
+    --shadow:    0 4px 24px rgba(0,0,0,.4);
+  }
+  html { font-size: 14px; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ─── Scrollbar ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
+    transition: transform .3s;
+  }
+  .sidebar-logo {
+    padding: 22px 20px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: #fff;
+  }
+  .logo-text { font-size: 16px; font-weight: 700; letter-spacing: .5px; }
+  .logo-text span { color: var(--accent); }
+  .sidebar-nav { padding: 16px 10px; flex: 1; overflow-y: auto; }
+  .nav-section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+    color: var(--text-muted); text-transform: uppercase;
+    padding: 10px 10px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all .2s;
+    font-size: 13.5px;
+    margin-bottom: 2px;
+    user-select: none;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active {
+    background: rgba(108,99,255,.18);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .nav-item .icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+  .nav-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+  .sidebar-bottom {
+    padding: 14px 10px;
+    border-top: 1px solid var(--border);
+  }
+  .user-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--surface2);
+    cursor: pointer;
+  }
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6c63ff, #00d4aa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .user-info .name { font-size: 13px; font-weight: 600; }
+  .user-info .role { font-size: 11px; color: var(--text-muted); }
+
+  /* ─── Main Layout ─── */
+  .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* ─── Header ─── */
+  .header {
+    height: var(--header-h);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 28px;
+    position: sticky; top: 0; z-index: 50;
+    gap: 16px;
+  }
+  .page-title { font-size: 17px; font-weight: 700; }
+  .page-title span { color: var(--text-muted); font-weight: 400; font-size: 14px; margin-left: 8px; }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .search-box {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 13px; color: var(--text);
+    width: 220px;
+  }
+  .search-box input {
+    background: none; border: none; outline: none;
+    color: var(--text); font-size: 13px; width: 100%;
+  }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 16px;
+    position: relative;
+    color: var(--text-muted);
+    transition: all .2s;
+  }
+  .icon-btn:hover { color: var(--text); border-color: var(--accent); }
+  .icon-btn .dot {
+    position: absolute; top: 6px; right: 6px;
+    width: 7px; height: 7px;
+    background: var(--accent3); border-radius: 50%;
+    border: 2px solid var(--surface);
+  }
+  .date-badge {
+    font-size: 12px; color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 12px;
+  }
+
+  /* ─── Content ─── */
+  .content { padding: 28px; flex: 1; overflow-y: auto; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── Stat Cards ─── */
+  .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; margin-bottom: 26px; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .stat-card.c1::before { background: linear-gradient(90deg, #6c63ff, #a78bfa); }
+  .stat-card.c2::before { background: linear-gradient(90deg, #00d4aa, #34d399); }
+  .stat-card.c3::before { background: linear-gradient(90deg, #ffd166, #fbbf24); }
+  .stat-card.c4::before { background: linear-gradient(90deg, #ff6b6b, #f87171); }
+  .stat-label { font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 10px; }
+  .stat-value { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+  .stat-sub { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+  .stat-sub .up { color: var(--accent2); font-weight: 600; }
+  .stat-sub .down { color: var(--accent3); font-weight: 600; }
+  .stat-icon {
+    position: absolute; right: 20px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 36px; opacity: .12;
+  }
+
+  /* ─── Charts Row ─── */
+  .charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 26px; }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .card-title { font-size: 14px; font-weight: 700; }
+  .card-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .tab-pills { display: flex; gap: 4px; }
+  .tab-pill {
+    padding: 5px 12px; border-radius: 6px; font-size: 12px;
+    cursor: pointer; border: 1px solid var(--border);
+    color: var(--text-muted); background: none;
+    transition: all .2s;
+  }
+  .tab-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ─── Bottom Grid ─── */
+  .bottom-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin-bottom: 26px; }
+
+  /* ─── Table ─── */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .table-card .card-header { padding: 18px 22px 0; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th {
+    padding: 10px 16px;
+    text-align: left; font-size: 11px;
+    color: var(--text-muted); font-weight: 700;
+    text-transform: uppercase; letter-spacing: .7px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .data-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid rgba(46,50,72,.5);
+    vertical-align: middle;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(108,99,255,.06); }
+  .customer-cell { display: flex; align-items: center; gap: 10px; }
+  .av-sm {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+    color: #fff;
+  }
+  .status-badge {
+    display: inline-block; padding: 3px 10px;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+  }
+  .s-paid   { background: rgba(0,212,170,.15); color: var(--accent2); }
+  .s-pending{ background: rgba(255,209,102,.15); color: var(--accent4); }
+  .s-overdue{ background: rgba(255,107,107,.15); color: var(--accent3); }
+  .s-active { background: rgba(0,212,170,.15); color: var(--accent2); }
+  .s-lead   { background: rgba(108,99,255,.15); color: var(--accent); }
+  .s-inactive{ background: rgba(139,144,179,.15); color: var(--text-muted); }
+
+  /* ─── Activity Feed ─── */
+  .activity-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 22px;
+    overflow-y: auto;
+    max-height: 340px;
+  }
+  .activity-item {
+    display: flex; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(46,50,72,.4);
+  }
+  .activity-item:last-child { border-bottom: none; }
+  .act-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    margin-top: 5px; flex-shrink: 0;
+  }
+  .act-text { font-size: 13px; line-height: 1.5; }
+  .act-text strong { font-weight: 600; }
+  .act-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ─── Customers Page ─── */
+  .page-toolbar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 8px 18px; border-radius: 8px; font-size: 13px;
+    font-weight: 600; cursor: pointer; transition: all .2s;
+    border: none; display: inline-flex; align-items: center; gap: 7px;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #5a52e0; }
+  .btn-outline { background: none; border: 1px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-select {
+    padding: 8px 14px; border-radius: 8px; font-size: 13px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); cursor: pointer; outline: none;
+  }
+  .spacer { flex: 1; }
+
+  /* ─── Invoices Page ─── */
+  .invoice-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 22px; }
+  .inv-sum-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .inv-sum-card .val { font-size: 24px; font-weight: 800; margin: 6px 0 4px; }
+  .inv-sum-card .lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .7px; }
+
+  /* ─── Reports Page ─── */
+  .reports-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 1100px) {
+    .stat-grid { grid-template-columns: repeat(2,1fr); }
+    .charts-row, .bottom-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-left: 0; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .reports-grid { grid-template-columns: 1fr; }
+    .invoice-summary { grid-template-columns: 1fr; }
+  }
+
+  /* ─── Progress bar ─── */
+  .progress-row { margin-bottom: 14px; }
+  .progress-label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 12.5px; }
+  .progress-label span:last-child { color: var(--text-muted); }
+  .progress-track {
+    height: 6px; background: var(--surface2); border-radius: 10px; overflow: hidden;
+  }
+  .progress-fill { height: 100%; border-radius: 10px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+
+  /* ─── Toast ─── */
+  .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 10px; }
+  .toast {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    box-shadow: var(--shadow);
+    animation: slideIn .3s ease;
+    min-width: 260px;
+  }
+  .toast.error { border-left-color: var(--accent3); }
+  @keyframes slideIn { from { opacity:0; transform: translateX(30px); } to { opacity:1; transform: translateX(0); } }
+
+  /* ─── Modal ─── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.65); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 30px;
+    width: 460px; max-width: 95vw;
+    box-shadow: var(--shadow);
+    animation: popIn .25s ease;
+  }
+  @keyframes popIn { from { opacity:0; transform: scale(.95); } to { opacity:1; transform: scale(1); } }
+  .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+  .modal-close { cursor: pointer; color: var(--text-muted); font-size: 20px; line-height:1; }
+  .modal-close:hover { color: var(--text); }
+  .form-row { margin-bottom: 16px; }
+  .form-label { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: .5px; }
+  .form-input {
+    width: 100%; padding: 9px 13px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); font-size: 13px; outline: none;
+    transition: border-color .2s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+  /* ─── Empty state ─── */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .empty-state .icon { font-size: 48px; margin-bottom: 14px; opacity: .4; }
+  .empty-state p { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">N</div>
+    <div class="logo-text">Nex<span>CRM</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <div class="nav-item active" onclick="navigate('dashboard',this)">
+      <span class="icon">📊</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="navigate('customers',this)">
+      <span class="icon">👥</span> Customers
+      <span class="nav-badge">248</span>
+    </div>
+    <div class="nav-item" onclick="navigate('invoices',this)">
+      <span class="icon">🧾</span> Invoices
+      <span class="nav-badge">12</span>
+    </div>
+    <div class="nav-item" onclick="navigate('reports',this)">
+      <span class="icon">📈</span> Reports
+    </div>
+    <div class="nav-section-label" style="margin-top:10px;">Sales</div>
+    <div class="nav-item" onclick="navigate('pipeline',this)">
+      <span class="icon">🔀</span> Pipeline
+    </div>
+    <div class="nav-item" onclick="navigate('tasks',this)">
+      <span class="icon">✅</span> Tasks
+    </div>
+    <div class="nav-section-label" style="margin-top:10px;">Settings</div>
+    <div class="nav-item">
+      <span class="icon">⚙️</span> Settings
+    </div>
+    <div class="nav-item">
+      <span class="icon">🔔</span> Notifications
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-card">
+      <div class="avatar">YR</div>
+      <div class="user-info">
+        <div class="name">Yash Reddy</div>
+        <div class="role">Admin</div>
+      </div>
+      <span style="margin-left:auto;font-size:16px;color:var(--text-muted);">⋯</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+  <!-- Header -->
+  <header class="header">
+    <div class="page-title" id="pageTitle">Dashboard <span>Overview</span></div>
+    <div class="header-right">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" placeholder="Search customers, invoices…" />
+      </div>
+      <div class="date-badge">📅 Feb 27, 2026</div>
+      <div class="icon-btn" onclick="showToast('You have 3 new notifications','info')">🔔<span class="dot"></span></div>
+      <div class="icon-btn">⚙️</div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══ PAGE: DASHBOARD ═══ -->
+    <div class="page active" id="page-dashboard">
+      <!-- Stat Cards -->
+      <div class="stat-grid">
+        <div class="stat-card c1">
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-value">₹48.3L</div>
+          <div class="stat-sub"><span class="up">▲ 12.4%</span> vs last month</div>
+          <div class="stat-icon">💰</div>
+        </div>
+        <div class="stat-card c2">
+          <div class="stat-label">Active Customers</div>
+          <div class="stat-value">248</div>
+          <div class="stat-sub"><span class="up">▲ 8 new</span> this week</div>
+          <div class="stat-icon">👥</div>
+        </div>
+        <div class="stat-card c3">
+          <div class="stat-label">Pending Invoices</div>
+          <div class="stat-value">₹6.7L</div>
+          <div class="stat-sub"><span class="down">▼ 3</span> overdue</div>
+          <div class="stat-icon">🧾</div>
+        </div>
+        <div class="stat-card c4">
+          <div class="stat-label">Deals Closed</div>
+          <div class="stat-value">34</div>
+          <div class="stat-sub"><span class="up">▲ 18.2%</span> conversion rate</div>
+          <div class="stat-icon">🤝</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Revenue Overview</div>
+              <div class="card-sub">Monthly revenue vs target</div>
+            </div>
+            <div class="tab-pills">
+              <button class="tab-pill active" onclick="switchChart(this,'monthly')">Monthly</button>
+              <button class="tab-pill" onclick="switchChart(this,'quarterly')">Quarterly</button>
+            </div>
+          </div>
+          <canvas id="revenueChart" height="120"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Sales by Channel</div>
+              <div class="card-sub">This quarter</div>
+            </div>
+          </div>
+          <canvas id="donutChart" height="170"></canvas>
+        </div>
+      </div>
+
+      <!-- Bottom Grid -->
+      <div class="bottom-grid">
+        <!-- Recent Invoices -->
+        <div class="table-card">
+          <div class="card-header" style="padding:18px 22px;">
+            <div>
+              <div class="card-title">Recent Invoices</div>
+              <div class="card-sub">Last 5 transactions</div>
+            </div>
+            <button class="btn btn-outline" style="font-size:12px;padding:6px 14px;" onclick="navigate('invoices',null)">View All</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Invoice</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="recentInvoicesBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="activity-card">
+          <div class="card-header" style="margin-bottom:14px;">
+            <div class="card-title">Recent Activity</div>
+          </div>
+          <div id="activityFeed"></div>
+        </div>
+      </div>
+
+      <!-- Sales Performance -->
+      <div class="chart-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Sales Rep Performance</div>
+            <div class="card-sub">Quota attainment this quarter</div>
+          </div>
+        </div>
+        <div id="perfBars"></div>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE: CUSTOMERS ═══ -->
+    <div class="page" id="page-customers">
+      <div class="page-toolbar">
+        <button class="btn btn-primary" onclick="openModal('addCustomer')">＋ Add Customer</button>
+        <select class="filter-select" onchange="filterCustomers(this.value)">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="lead">Lead</option>
+          <option value="inactive">Inactive</option>
+        </select>
+        <div class="spacer"></div>
+        <div class="search-box" style="width:200px;">
+          <span>🔍</span>
+          <input type="text" placeholder="Search…" oninput="searchCustomers(this.value)" />
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Company</th>
+              <th>Email</th>
+              <th>Value</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="customersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE: INVOICES ═══ -->
+    <div class="page" id="page-invoices">
+      <div class="invoice-summary">
+        <div class="inv-sum-card">
+          <div class="lbl">Total Invoiced</div>
+          <div class="val" style="color:var(--accent)">₹54.8L</div>
+          <div style="font-size:12px;color:var(--text-muted)">FY 2025–26</div>
+        </div>
+        <div class="inv-sum-card">
+          <div class="lbl">Outstanding</div>
+          <div class="val" style="color:var(--accent4)">₹6.7L</div>
+          <div style="font-size:12px;color:var(--text-muted)">12 invoices pending</div>
+        </div>
+        <div class="inv-sum-card">
+          <div class="lbl">Overdue</div>
+          <div class="val" style="color:var(--accent3)">₹1.2L</div>
+          <div style="font-size:12px;color:var(--text-muted)">3 invoices overdue</div>
+        </div>
+      </div>
+      <div class="page-toolbar">
+        <button class="btn btn-primary" onclick="openModal('createInvoice')">＋ New Invoice</button>
+        <select class="filter-select">
+          <option>All Invoices</option>
+          <option>Paid</option>
+          <option>Pending</option>
+          <option>Overdue</option>
+        </select>
+        <div class="spacer"></div>
+        <button class="btn btn-outline">⬇ Export CSV</button>
+      </div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Invoice #</th>
+              <th>Customer</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="invoicesBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE: REPORTS ═══ -->
+    <div class="page" id="page-reports">
+      <div class="stat-grid" style="margin-bottom:22px;">
+        <div class="stat-card c1">
+          <div class="stat-label">YTD Revenue</div>
+          <div class="stat-value">₹1.2Cr</div>
+          <div class="stat-sub"><span class="up">▲ 22%</span> vs last year</div>
+        </div>
+        <div class="stat-card c2">
+          <div class="stat-label">Avg Deal Size</div>
+          <div class="stat-value">₹1.9L</div>
+          <div class="stat-sub"><span class="up">▲ 5%</span> improvement</div>
+        </div>
+        <div class="stat-card c3">
+          <div class="stat-label">Customer LTV</div>
+          <div class="stat-value">₹4.6L</div>
+          <div class="stat-sub"><span class="up">▲ 9%</span> vs Q3</div>
+        </div>
+        <div class="stat-card c4">
+          <div class="stat-label">Churn Rate</div>
+          <div class="stat-value">3.2%</div>
+          <div class="stat-sub"><span class="down">▲ 0.4%</span> increase</div>
+        </div>
+      </div>
+      <div class="reports-grid">
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Revenue Trend</div>
+              <div class="card-sub">Last 12 months</div>
+            </div>
+          </div>
+          <canvas id="trendChart" height="150"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Customer Acquisition</div>
+              <div class="card-sub">New vs churned</div>
+            </div>
+          </div>
+          <canvas id="acqChart" height="150"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Top Revenue Sources</div>
+              <div class="card-sub">By industry vertical</div>
+            </div>
+          </div>
+          <canvas id="barH" height="160"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Invoice Status Breakdown</div>
+              <div class="card-sub">All time</div>
+            </div>
+          </div>
+          <canvas id="pieReport" height="160"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PAGE: PIPELINE ═══ -->
+    <div class="page" id="page-pipeline">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px;" id="pipeline-board"></div>
+    </div>
+
+    <!-- ═══ PAGE: TASKS ═══ -->
+    <div class="page" id="page-tasks">
+      <div class="page-toolbar">
+        <button class="btn btn-primary" onclick="openModal('addTask')">＋ New Task</button>
+      </div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead>
+            <tr><th>Task</th><th>Assignee</th><th>Due</th><th>Priority</th><th>Status</th></tr>
+          </thead>
+          <tbody id="tasksBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ═══ MODALS ═══ -->
+<div class="modal-overlay" id="modal-addCustomer">
+  <div class="modal">
+    <div class="modal-title">Add New Customer <span class="modal-close" onclick="closeModal('addCustomer')">×</span></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">First Name</label><input class="form-input" placeholder="Ravi"/></div>
+      <div class="form-row"><label class="form-label">Last Name</label><input class="form-input" placeholder="Sharma"/></div>
+    </div>
+    <div class="form-row"><label class="form-label">Company</label><input class="form-input" placeholder="Acme Corp"/></div>
+    <div class="form-row"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="ravi@acme.com"/></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">Phone</label><input class="form-input" placeholder="+91 98765…"/></div>
+      <div class="form-row">
+        <label class="form-label">Status</label>
+        <select class="form-input filter-select" style="padding:9px 13px;">
+          <option>Active</option><option>Lead</option><option>Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('addCustomer')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('addCustomer');showToast('Customer added successfully!')">Save Customer</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-createInvoice">
+  <div class="modal">
+    <div class="modal-title">Create Invoice <span class="modal-close" onclick="closeModal('createInvoice')">×</span></div>
+    <div class="form-row"><label class="form-label">Customer</label>
+      <select class="form-input filter-select" style="padding:9px 13px;">
+        <option>Tata Consultancy</option><option>Infosys Ltd</option><option>Wipro Technologies</option>
+      </select>
+    </div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">Issue Date</label><input class="form-input" type="date"/></div>
+      <div class="form-row"><label class="form-label">Due Date</label><input class="form-input" type="date"/></div>
+    </div>
+    <div class="form-row"><label class="form-label">Description</label><input class="form-input" placeholder="Software license — Q1 2026"/></div>
+    <div class="form-row"><label class="form-label">Amount (₹)</label><input class="form-input" type="number" placeholder="150000"/></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('createInvoice')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('createInvoice');showToast('Invoice INV-0049 created!')">Create Invoice</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-addTask">
+  <div class="modal">
+    <div class="modal-title">New Task <span class="modal-close" onclick="closeModal('addTask')">×</span></div>
+    <div class="form-row"><label class="form-label">Task Title</label><input class="form-input" placeholder="Follow up with client…"/></div>
+    <div class="form-row-2">
+      <div class="form-row"><label class="form-label">Assignee</label><input class="form-input" placeholder="Yash Reddy"/></div>
+      <div class="form-row"><label class="form-label">Due Date</label><input class="form-input" type="date"/></div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Priority</label>
+      <select class="form-input filter-select" style="padding:9px 13px;">
+        <option>High</option><option>Medium</option><option>Low</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('addTask')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeModal('addTask');showToast('Task created!')">Create Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const customers = [
+  {id:1,name:'Rajesh Kumar',company:'Tata Consultancy',email:'rajesh@tcs.com',value:'₹8.2L',status:'active',joined:'Jan 2024',color:'#6c63ff'},
+  {id:2,name:'Priya Mehta',company:'Infosys Ltd',email:'priya@infosys.com',value:'₹5.4L',status:'active',joined:'Mar 2024',color:'#00d4aa'},
+  {id:3,name:'Amit Shah',company:'Wipro Technologies',email:'amit@wipro.com',value:'₹3.1L',status:'lead',joined:'Jun 2024',color:'#ffd166'},
+  {id:4,name:'Sunita Rao',company:'HCL Tech',email:'sunita@hcl.com',value:'₹6.8L',status:'active',joined:'Feb 2024',color:'#ff6b6b'},
+  {id:5,name:'Vikram Singh',company:'Tech Mahindra',email:'vikram@techmahindra.com',value:'₹2.3L',status:'inactive',joined:'Aug 2023',color:'#a78bfa'},
+  {id:6,name:'Deepa Nair',company:'Mindtree Ltd',email:'deepa@mindtree.com',value:'₹4.0L',status:'lead',joined:'Sep 2024',color:'#34d399'},
+  {id:7,name:'Arjun Patel',company:'Mphasis',email:'arjun@mphasis.com',value:'₹1.7L',status:'active',joined:'Oct 2024',color:'#f87171'},
+  {id:8,name:'Kavya Reddy',company:'Hexaware',email:'kavya@hexaware.com',value:'₹9.1L',status:'active',joined:'Dec 2023',color:'#fbbf24'},
+];
+
+const invoices = [
+  {id:'INV-0048',customer:'Tata Consultancy',issued:'Feb 01, 2026',due:'Feb 28, 2026',amount:'₹1,50,000',status:'paid'},
+  {id:'INV-0047',customer:'Infosys Ltd',issued:'Jan 20, 2026',due:'Feb 19, 2026',amount:'₹88,500',status:'paid'},
+  {id:'INV-0046',customer:'Wipro Technologies',issued:'Jan 15, 2026',due:'Feb 14, 2026',amount:'₹2,20,000',status:'pending'},
+  {id:'INV-0045',customer:'HCL Tech',issued:'Jan 05, 2026',due:'Feb 04, 2026',amount:'₹67,000',status:'overdue'},
+  {id:'INV-0044',customer:'Tech Mahindra',issued:'Dec 20, 2025',due:'Jan 19, 2026',amount:'₹1,10,000',status:'paid'},
+  {id:'INV-0043',customer:'Mindtree Ltd',issued:'Dec 15, 2025',due:'Jan 14, 2026',amount:'₹95,000',status:'pending'},
+  {id:'INV-0042',customer:'Mphasis',issued:'Dec 01, 2025',due:'Dec 31, 2025',amount:'₹45,000',status:'overdue'},
+  {id:'INV-0041',customer:'Hexaware',issued:'Nov 20, 2025',due:'Dec 20, 2025',amount:'₹3,40,000',status:'paid'},
+];
+
+const tasks = [
+  {title:'Follow up with Tata Consultancy',assignee:'Yash Reddy',due:'Mar 01, 2026',priority:'high',status:'pending'},
+  {title:'Send proposal to Mindtree',assignee:'Sneha Patel',due:'Mar 03, 2026',priority:'high',status:'pending'},
+  {title:'Quarterly review meeting — Infosys',assignee:'Yash Reddy',due:'Mar 05, 2026',priority:'medium',status:'done'},
+  {title:'Renew contract — HCL Tech',assignee:'Aryan Das',due:'Mar 10, 2026',priority:'low',status:'pending'},
+  {title:'Demo walkthrough — Hexaware',assignee:'Sneha Patel',due:'Mar 12, 2026',priority:'medium',status:'pending'},
+];
+
+const activities = [
+  {text:'<strong>Rajesh Kumar</strong> signed a new contract worth ₹8.2L',time:'2 hours ago',color:'#6c63ff'},
+  {text:'Invoice <strong>INV-0048</strong> marked as paid by Tata Consultancy',time:'4 hours ago',color:'#00d4aa'},
+  {text:'New lead <strong>Deepa Nair</strong> from Mindtree added',time:'Yesterday, 3:45 PM',color:'#ffd166'},
+  {text:'Overdue alert: <strong>INV-0045</strong> from HCL Tech',time:'Yesterday, 10:00 AM',color:'#ff6b6b'},
+  {text:'<strong>Kavya Reddy</strong> upgraded to Enterprise plan',time:'Feb 25, 2026',color:'#a78bfa'},
+  {text:'Sales target for February exceeded by <strong>12.4%</strong>',time:'Feb 24, 2026',color:'#34d399'},
+];
+
+const pipeline = {
+  'Prospecting': [
+    {name:'Mindtree Ltd',value:'₹3.5L',contact:'Deepa Nair'},
+    {name:'Mphasis',value:'₹1.2L',contact:'Arjun Patel'},
+  ],
+  'Proposal': [
+    {name:'NIIT Tech',value:'₹5.0L',contact:'Shiv Gupta'},
+    {name:'Mastech',value:'₹2.8L',contact:'Rina Das'},
+  ],
+  'Negotiation': [
+    {name:'Coforge',value:'₹7.4L',contact:'Manu Rao'},
+  ],
+  'Won': [
+    {name:'Tata Consultancy',value:'₹8.2L',contact:'Rajesh Kumar'},
+    {name:'Infosys Ltd',value:'₹5.4L',contact:'Priya Mehta'},
+    {name:'HCL Tech',value:'₹6.8L',contact:'Sunita Rao'},
+  ],
+};
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+const titles = {dashboard:'Dashboard',customers:'Customers',invoices:'Invoices',reports:'Reports',pipeline:'Sales Pipeline',tasks:'Tasks'};
+const subs   = {dashboard:'Overview',customers:'All Accounts',invoices:'Billing',reports:'Analytics',pipeline:'Deal Stages',tasks:'Work Queue'};
+
+function navigate(page, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const t = document.getElementById('pageTitle');
+  t.innerHTML = titles[page]+' <span>'+subs[page]+'</span>';
+  if(page==='reports') initReportCharts();
+  if(page==='pipeline') renderPipeline();
+  if(page==='tasks') renderTasks();
+}
+
+/* ══════════════════════════════════════════
+   RENDER TABLES
+══════════════════════════════════════════ */
+function renderCustomers(list){
+  const tbody = document.getElementById('customersBody');
+  tbody.innerHTML = list.map(c=>`
+    <tr>
+      <td><div class="customer-cell">
+        <div class="av-sm" style="background:${c.color}">${c.name[0]}</div>
+        ${c.name}
+      </div></td>
+      <td>${c.company}</td>
+      <td style="color:var(--text-muted)">${c.email}</td>
+      <td style="font-weight:700">${c.value}</td>
+      <td><span class="status-badge s-${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td>
+      <td style="color:var(--text-muted)">${c.joined}</td>
+      <td>
+        <button class="btn btn-outline" style="padding:5px 12px;font-size:11px;" onclick="showToast('Viewing ${c.name}','info')">View</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterCustomers(val){
+  renderCustomers(val==='all'?customers:customers.filter(c=>c.status===val));
+}
+function searchCustomers(q){
+  renderCustomers(customers.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())||c.company.toLowerCase().includes(q.toLowerCase())));
+}
+
+function renderInvoices(){
+  const tbody = document.getElementById('invoicesBody');
+  tbody.innerHTML = invoices.map(inv=>`
+    <tr>
+      <td style="font-weight:700;color:var(--accent)">${inv.id}</td>
+      <td>${inv.customer}</td>
+      <td style="color:var(--text-muted)">${inv.issued}</td>
+      <td style="color:var(--text-muted)">${inv.due}</td>
+      <td style="font-weight:700">${inv.amount}</td>
+      <td><span class="status-badge s-${inv.status}">${inv.status.charAt(0).toUpperCase()+inv.status.slice(1)}</span></td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-outline" style="padding:5px 10px;font-size:11px;" onclick="showToast('Downloading ${inv.id}…','info')">⬇</button>
+        <button class="btn btn-outline" style="padding:5px 10px;font-size:11px;" onclick="showToast('Sending ${inv.id} via email…','info')">📧</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderRecentInvoices(){
+  const tbody = document.getElementById('recentInvoicesBody');
+  tbody.innerHTML = invoices.slice(0,5).map(inv=>`
+    <tr>
+      <td style="font-weight:700;color:var(--accent)">${inv.id}</td>
+      <td>${inv.customer}</td>
+      <td style="font-weight:600">${inv.amount}</td>
+      <td><span class="status-badge s-${inv.status}">${inv.status.charAt(0).toUpperCase()+inv.status.slice(1)}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderActivity(){
+  const feed = document.getElementById('activityFeed');
+  feed.innerHTML = activities.map(a=>`
+    <div class="activity-item">
+      <div class="act-dot" style="background:${a.color}"></div>
+      <div>
+        <div class="act-text">${a.text}</div>
+        <div class="act-time">${a.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPerfBars(){
+  const reps = [
+    {name:'Yash Reddy',pct:94,color:'#6c63ff'},
+    {name:'Sneha Patel',pct:78,color:'#00d4aa'},
+    {name:'Aryan Das',pct:62,color:'#ffd166'},
+    {name:'Riya Joshi',pct:55,color:'#ff6b6b'},
+    {name:'Karan Mehta',pct:83,color:'#a78bfa'},
+  ];
+  document.getElementById('perfBars').innerHTML = reps.map(r=>`
+    <div class="progress-row">
+      <div class="progress-label"><span>${r.name}</span><span>${r.pct}% of quota</span></div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${r.pct}%;background:${r.color}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderPipeline(){
+  const board = document.getElementById('pipeline-board');
+  const stageColors = {'Prospecting':'#6c63ff','Proposal':'#ffd166','Negotiation':'#00d4aa','Won':'#34d399'};
+  board.innerHTML = Object.entries(pipeline).map(([stage,deals])=>`
+    <div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;
+           color:${stageColors[stage]};margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid ${stageColors[stage]}30;">
+        ${stage} <span style="background:${stageColors[stage]}22;border-radius:20px;padding:2px 9px;margin-left:6px;font-size:11px;">${deals.length}</span>
+      </div>
+      ${deals.map(d=>`
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:grab;">
+          <div style="font-weight:700;margin-bottom:4px;">${d.name}</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">👤 ${d.contact}</div>
+          <div style="font-size:14px;font-weight:800;color:${stageColors[stage]}">${d.value}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function renderTasks(){
+  const prioColor = {high:'var(--accent3)',medium:'var(--accent4)',low:'var(--accent2)'};
+  document.getElementById('tasksBody').innerHTML = tasks.map(t=>`
+    <tr>
+      <td style="font-weight:600">${t.title}</td>
+      <td>${t.assignee}</td>
+      <td style="color:var(--text-muted)">${t.due}</td>
+      <td><span style="background:${prioColor[t.priority]}22;color:${prioColor[t.priority]};
+           padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:capitalize;">
+        ${t.priority}
+      </span></td>
+      <td><span class="status-badge ${t.status==='done'?'s-paid':'s-pending'}">${t.status==='done'?'Done':'Pending'}</span></td>
+    </tr>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   CHARTS
+══════════════════════════════════════════ */
+const chartDefaults = {
+  plugins:{legend:{labels:{color:'#8b90b3',font:{size:12}}}},
+  scales:{
+    x:{ticks:{color:'#8b90b3'},grid:{color:'rgba(46,50,72,.6)'}},
+    y:{ticks:{color:'#8b90b3'},grid:{color:'rgba(46,50,72,.6)'}}
+  }
+};
+
+const monthlyData = [28,34,22,40,38,45,52,48,56,61,58,67];
+const quarterlyData = [84,135,165,186];
+let revenueChart, donutChart, trendChart, acqChart, barH, pieReport;
+
+function initDashboardCharts(){
+  // Revenue Line
+  revenueChart = new Chart(document.getElementById('revenueChart'),{
+    type:'line',
+    data:{
+      labels:['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'],
+      datasets:[
+        {label:'Revenue (₹L)',data:monthlyData,borderColor:'#6c63ff',backgroundColor:'rgba(108,99,255,.12)',tension:.4,fill:true,pointBackgroundColor:'#6c63ff',pointRadius:4},
+        {label:'Target',data:[30,32,35,36,38,42,45,47,52,58,60,65],borderColor:'#00d4aa',borderDash:[6,3],backgroundColor:'transparent',tension:.4,pointRadius:0},
+      ]
+    },
+    options:{...chartDefaults,responsive:true,interaction:{mode:'index',intersect:false}}
+  });
+
+  // Donut
+  donutChart = new Chart(document.getElementById('donutChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Direct','Referral','Online','Partner','Cold Call'],
+      datasets:[{data:[35,25,20,12,8],backgroundColor:['#6c63ff','#00d4aa','#ffd166','#ff6b6b','#a78bfa'],borderWidth:0,hoverOffset:8}]
+    },
+    options:{responsive:true,cutout:'70%',plugins:{legend:{position:'bottom',labels:{color:'#8b90b3',padding:12,font:{size:11}}}}}
+  });
+}
+
+function initReportCharts(){
+  if(trendChart) return;
+  trendChart = new Chart(document.getElementById('trendChart'),{
+    type:'line',
+    data:{
+      labels:['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'],
+      datasets:[{label:'Revenue',data:monthlyData,borderColor:'#6c63ff',backgroundColor:'rgba(108,99,255,.15)',tension:.4,fill:true,pointRadius:3}]
+    },
+    options:{...chartDefaults,responsive:true}
+  });
+  acqChart = new Chart(document.getElementById('acqChart'),{
+    type:'bar',
+    data:{
+      labels:['Q1','Q2','Q3','Q4'],
+      datasets:[
+        {label:'New',data:[22,30,28,35],backgroundColor:'rgba(0,212,170,.7)',borderRadius:6},
+        {label:'Churned',data:[4,6,3,5],backgroundColor:'rgba(255,107,107,.7)',borderRadius:6},
+      ]
+    },
+    options:{...chartDefaults,responsive:true,scales:{...chartDefaults.scales}}
+  });
+  barH = new Chart(document.getElementById('barH'),{
+    type:'bar',
+    data:{
+      labels:['IT Services','Manufacturing','Finance','Healthcare','Retail'],
+      datasets:[{label:'Revenue (₹L)',data:[48,32,27,18,10],backgroundColor:['#6c63ff','#00d4aa','#ffd166','#ff6b6b','#a78bfa'],borderRadius:6}]
+    },
+    options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8b90b3'},grid:{color:'rgba(46,50,72,.6)'}},y:{ticks:{color:'#8b90b3'},grid:{display:false}}}}
+  });
+  pieReport = new Chart(document.getElementById('pieReport'),{
+    type:'pie',
+    data:{
+      labels:['Paid','Pending','Overdue'],
+      datasets:[{data:[72,18,10],backgroundColor:['#00d4aa','#ffd166','#ff6b6b'],borderWidth:0}]
+    },
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'#8b90b3',padding:14,font:{size:11}}}}}
+  });
+}
+
+function switchChart(btn, mode){
+  document.querySelectorAll('.tab-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  if(mode==='quarterly'){
+    revenueChart.data.labels = ['Q1','Q2','Q3','Q4'];
+    revenueChart.data.datasets[0].data = quarterlyData;
+    revenueChart.data.datasets[1].data = [80,130,160,180];
+  } else {
+    revenueChart.data.labels = ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
+    revenueChart.data.datasets[0].data = monthlyData;
+    revenueChart.data.datasets[1].data = [30,32,35,36,38,42,45,47,52,58,60,65];
+  }
+  revenueChart.update('active');
+}
+
+/* ══════════════════════════════════════════
+   MODAL / TOAST
+══════════════════════════════════════════ */
+function openModal(id){ document.getElementById('modal-'+id).classList.add('open'); }
+function closeModal(id){ document.getElementById('modal-'+id).classList.remove('open'); }
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); });
+});
+
+function showToast(msg, type='success'){
+  const tc = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast'+(type==='error'?' error':'');
+  toast.innerHTML = (type==='error'?'❌':'✅')+' '+msg;
+  tc.appendChild(toast);
+  setTimeout(()=>toast.remove(),3500);
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',()=>{
+  renderCustomers(customers);
+  renderInvoices();
+  renderRecentInvoices();
+  renderActivity();
+  renderPerfBars();
+  initDashboardCharts();
+});
+</script>
+</body>
+</html>

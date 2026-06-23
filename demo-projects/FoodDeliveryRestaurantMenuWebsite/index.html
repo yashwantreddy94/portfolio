@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spice & Co. — Restaurant Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #e8602c;
+      --primary-dark: #c04e1e;
+      --bg: #0f0e0e;
+      --surface: #1a1918;
+      --surface2: #242220;
+      --border: #2e2c2a;
+      --text: #f0ede8;
+      --muted: #8a8480;
+      --whatsapp: #25D366;
+      --radius: 16px;
+      --card-radius: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(15, 14, 14, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .nav-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--text);
+      letter-spacing: 0.3px;
+    }
+
+    .nav-logo-text span { color: var(--primary); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-btn {
+      padding: 9px 20px;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      color: #fff;
+    }
+
+    .btn-whatsapp:hover { background: #1fb355; transform: scale(1.03); }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.35);
+      transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+
+    .hero:hover .hero-bg { transform: scale(1); }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(232,96,44,0.18) 0%, transparent 60%),
+                  linear-gradient(to top, rgba(15,14,14,0.9) 0%, transparent 50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 8%;
+      max-width: 700px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(232,96,44,0.15);
+      border: 1px solid rgba(232,96,44,0.4);
+      color: var(--primary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 50px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--primary);
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      margin-bottom: 30px;
+      max-width: 480px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 13px 30px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(232,96,44,0.35); }
+
+    .btn-ghost {
+      padding: 13px 30px;
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+
+    /* ===== STATS BAR ===== */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 8%;
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .stat-item strong { color: var(--text); font-size: 1.05rem; }
+    .stat-item i { color: var(--primary); font-size: 1rem; }
+
+    /* ===== MENU SECTION ===== */
+    .menu-section {
+      padding: 60px 5%;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ===== CATEGORY TABS ===== */
+    .category-tabs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 20px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.22s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(232,96,44,0.3);
+    }
+
+    .tab-btn .tab-count {
+      background: rgba(255,255,255,0.2);
+      color: inherit;
+      font-size: 0.75rem;
+      padding: 1px 7px;
+      border-radius: 50px;
+    }
+
+    .tab-btn:not(.active) .tab-count { background: var(--surface2); }
+
+    /* ===== MENU GRID ===== */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    /* ===== MENU CARD ===== */
+    .menu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      transition: transform 0.28s, box-shadow 0.28s;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      border-color: rgba(232,96,44,0.35);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .menu-card:hover .card-img-wrap img { transform: scale(1.08); }
+
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 50px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .card-badge.veg { background: #2d8a4e; }
+    .card-badge.bestseller { background: #d4a017; color: #000; }
+    .card-badge.spicy { background: #c0392b; }
+    .card-badge.new { background: #6c5ce7; }
+
+    .card-fav {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .card-fav:hover, .card-fav.active { color: #e74c3c; }
+
+    .card-body {
+      padding: 18px 18px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .card-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 14px;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .card-rating i { color: #f0c040; font-size: 0.78rem; }
+    .card-rating strong { color: var(--text); }
+
+    .btn-order {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--whatsapp);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.22s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-order:hover { background: #1fb355; transform: scale(1.05); }
+
+    /* ===== HIDDEN CARDS ===== */
+    .menu-card.hidden {
+      display: none;
+    }
+
+    /* ===== FEATURED BANNER ===== */
+    .featured-banner {
+      margin: 0 5% 60px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      height: 240px;
+      display: flex;
+      align-items: center;
+    }
+
+    .featured-banner-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.3);
+    }
+
+    .featured-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(232,96,44,0.25) 0%, transparent 70%);
+    }
+
+    .featured-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 6%;
+    }
+
+    .featured-content p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .featured-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .featured-content h2 em { color: var(--primary); font-style: italic; }
+
+    .featured-content span {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 40px 8%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-brand p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--primary); }
+
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .social-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* ===== WHATSAPP FLOAT ===== */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--whatsapp);
+      color: #fff;
+      padding: 13px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+      transition: all 0.25s;
+      animation: pulse-wa 2.5s infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.07);
+      box-shadow: 0 12px 40px rgba(37,211,102,0.6);
+      animation: none;
+    }
+
+    @keyframes pulse-wa {
+      0%, 100% { box-shadow: 0 8px 30px rgba(37,211,102,0.4); }
+      50% { box-shadow: 0 8px 40px rgba(37,211,102,0.7); }
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      max-width: 520px;
+      width: 100%;
+      overflow: hidden;
+      animation: modal-in 0.28s ease;
+    }
+
+    @keyframes modal-in {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-img { width: 100%; height: 240px; object-fit: cover; }
+
+    .modal-body { padding: 24px; }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--text);
+    }
+
+    .modal-price { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+
+    .modal-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+
+    .modal-close {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover { background: var(--primary-dark); }
+
+    .modal-x {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      border-radius: 50%;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal { position: relative; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .nav-actions .btn-outline { display: none; }
+      .stats-bar { gap: 20px; padding: 18px 5%; }
+      .menu-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .whatsapp-float span { display: none; }
+      .whatsapp-float { padding: 14px; border-radius: 50%; }
+    }
+
+    @media (max-width: 400px) {
+      .menu-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🍽️</div>
+    <div class="nav-logo-text">Spice<span>&Co.</span></div>
+  </a>
+  <div class="nav-actions">
+    <a href="tel:+919876543210" class="nav-btn btn-outline">
+      <i class="fas fa-phone"></i> Call Us
+    </a>
+    <a href="https://wa.me/919876543210?text=Hi!%20I%27d%20like%20to%20place%20an%20order." target="_blank" class="nav-btn btn-whatsapp">
+      <i class="fab fa-whatsapp"></i> Order on WhatsApp
+    </a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <i class="fas fa-fire"></i> Now Open for Delivery
+    </div>
+    <h1>Crafted with <em>Passion,</em><br/>Served with Love</h1>
+    <p>Explore our handpicked menu of fresh, flavourful dishes — from sizzling starters to rich desserts. Order in minutes via WhatsApp.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn-primary">
+        <i class="fas fa-utensils"></i> Explore Menu
+      </a>
+      <a href="https://wa.me/919876543210?text=Hi!%20I%27d%20like%20to%20place%20an%20order." target="_blank" class="btn-ghost">
+        <i class="fab fa-whatsapp"></i> Quick Order
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS BAR ===== -->
+<div class="stats-bar">
+  <div class="stat-item"><i class="fas fa-star"></i> <strong>4.8</strong> Avg Rating</div>
+  <div class="stat-item"><i class="fas fa-shipping-fast"></i> <strong>25–35 min</strong> Delivery</div>
+  <div class="stat-item"><i class="fas fa-check-circle"></i> <strong>100%</strong> Fresh Ingredients</div>
+  <div class="stat-item"><i class="fas fa-utensils"></i> <strong>50+</strong> Menu Items</div>
+</div>
+
+<!-- ===== MENU SECTION ===== -->
+<section class="menu-section" id="menu">
+  <div class="section-header">
+    <div class="section-label">Our Menu</div>
+    <h2 class="section-title">What Would You Like Today?</h2>
+    <p class="section-desc">Browse our curated collection of dishes, freshly prepared every day.</p>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="category-tabs">
+    <button class="tab-btn active" data-filter="all">
+      All <span class="tab-count">12</span>
+    </button>
+    <button class="tab-btn" data-filter="starters">
+      🥗 Starters <span class="tab-count">3</span>
+    </button>
+    <button class="tab-btn" data-filter="mains">
+      🍛 Mains <span class="tab-count">3</span>
+    </button>
+    <button class="tab-btn" data-filter="burgers">
+      🍔 Burgers <span class="tab-count">2</span>
+    </button>
+    <button class="tab-btn" data-filter="pizza">
+      🍕 Pizza <span class="tab-count">2</span>
+    </button>
+    <button class="tab-btn" data-filter="drinks">
+      🥤 Drinks <span class="tab-count">2</span>
+    </button>
+  </div>
+
+  <!-- Menu Grid -->
+  <div class="menu-grid" id="menuGrid">
+
+    <!-- STARTERS -->
+    <div class="menu-card" data-category="starters"
+         data-name="Crispy Veg Spring Rolls"
+         data-price="₹149"
+         data-desc="Golden-fried spring rolls stuffed with a medley of fresh vegetables, glass noodles, and aromatic spices. Served with a sweet chilli dipping sauce."
+         data-img="https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=600&q=80"
+         data-badge="veg" data-badge-label="Veg" data-rating="4.6">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=600&q=80" alt="Spring Rolls" loading="lazy"/>
+        <span class="card-badge veg">Veg</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Crispy Veg Spring Rolls</div>
+          <div class="card-price">₹149</div>
+        </div>
+        <p class="card-desc">Golden-fried rolls stuffed with fresh veggies & glass noodles. Served with sweet chilli sauce.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.6</strong><span>(82)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Crispy Veg Spring Rolls', '₹149')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card" data-category="starters"
+         data-name="Chicken Wings"
+         data-price="₹289"
+         data-desc="Juicy, sticky chicken wings glazed with a tangy BBQ and chilli sauce, baked to perfection and finished on the grill for a smoky char."
+         data-img="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=600&q=80"
+         data-badge="bestseller" data-badge-label="Bestseller" data-rating="4.9">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=600&q=80" alt="Chicken Wings" loading="lazy"/>
+        <span class="card-badge bestseller">Bestseller</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">BBQ Chicken Wings</div>
+          <div class="card-price">₹289</div>
+        </div>
+        <p class="card-desc">Sticky, smoky wings glazed with tangy BBQ sauce. Grilled to perfection.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.9</strong><span>(210)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('BBQ Chicken Wings', '₹289')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card" data-category="starters"
+         data-name="Paneer Tikka"
+         data-price="₹199"
+         data-desc="Soft cubes of fresh cottage cheese marinated in a spiced yoghurt blend, skewered and charred in a tandoor for authentic smoky flavour."
+         data-img="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80"
+         data-badge="spicy" data-badge-label="Spicy" data-rating="4.7">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" alt="Paneer Tikka" loading="lazy"/>
+        <span class="card-badge spicy">🌶 Spicy</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Paneer Tikka</div>
+          <div class="card-price">₹199</div>
+        </div>
+        <p class="card-desc">Tandoor-charred cottage cheese in spiced yoghurt marinade. A classic favourite.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.7</strong><span>(154)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Paneer Tikka', '₹199')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAINS -->
+    <div class="menu-card" data-category="mains"
+         data-name="Butter Chicken"
+         data-price="₹349"
+         data-desc="The iconic North Indian classic — tender chicken pieces slow-simmered in a velvety tomato and butter gravy, richly spiced with fenugreek and cream."
+         data-img="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80"
+         data-badge="bestseller" data-badge-label="Bestseller" data-rating="4.9">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80" alt="Butter Chicken" loading="lazy"/>
+        <span class="card-badge bestseller">Bestseller</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Butter Chicken</div>
+          <div class="card-price">₹349</div>
+        </div>
+        <p class="card-desc">Tender chicken in a velvety tomato-butter gravy with cream and fenugreek.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.9</strong><span>(320)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Butter Chicken', '₹349')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card" data-category="mains"
+         data-name="Veg Biryani"
+         data-price="₹249"
+         data-desc="Fragrant long-grain basmati rice layered with seasonal vegetables, whole spices, saffron, and fried onions. Slow-cooked in the traditional dum style."
+         data-img="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&q=80"
+         data-badge="veg" data-badge-label="Veg" data-rating="4.5">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&q=80" alt="Veg Biryani" loading="lazy"/>
+        <span class="card-badge veg">Veg</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Veg Dum Biryani</div>
+          <div class="card-price">₹249</div>
+        </div>
+        <p class="card-desc">Aromatic basmati layered with veggies, saffron, and fried onions. Slow dum-cooked.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.5</strong><span>(178)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Veg Dum Biryani', '₹249')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card" data-category="mains"
+         data-name="Grilled Salmon"
+         data-price="₹549"
+         data-desc="Fresh Atlantic salmon fillet grilled with herb butter, lemon zest, and capers, served alongside creamy mashed potatoes and seasonal vegetables."
+         data-img="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80"
+         data-badge="new" data-badge-label="New" data-rating="4.8">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80" alt="Grilled Salmon" loading="lazy"/>
+        <span class="card-badge new">New</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Herb Grilled Salmon</div>
+          <div class="card-price">₹549</div>
+        </div>
+        <p class="card-desc">Atlantic salmon with herb butter and lemon zest, served with creamy mash.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.8</strong><span>(67)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Herb Grilled Salmon', '₹549')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BURGERS -->
+    <div class="menu-card" data-category="burgers"
+         data-name="Classic Smash Burger"
+         data-price="₹229"
+         data-desc="A double-smashed beef patty with American cheese, crispy pickles, caramelised onions, and our signature house sauce in a toasted brioche bun."
+         data-img="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80"
+         data-badge="bestseller" data-badge-label="Bestseller" data-rating="4.8">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Burger" loading="lazy"/>
+        <span class="card-badge bestseller">Bestseller</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Classic Smash Burger</div>
+          <div class="card-price">₹229</div>
+        </div>
+        <p class="card-desc">Double-smashed patty, American cheese, pickles & house sauce on a brioche bun.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.8</strong><span>(195)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Classic Smash Burger', '₹229')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card" data-category="burgers"
+         data-name="Crispy Chicken Burger"
+         data-price="₹209"
+         data-desc="Crispy fried chicken thigh, coleslaw, jalapeños, and sriracha mayo stacked in a toasted sesame bun. Spicy, crunchy, and absolutely addictive."
+         data-img="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=600&q=80"
+         data-badge="spicy" data-badge-label="Spicy" data-rating="4.7">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=600&q=80" alt="Crispy Chicken Burger" loading="lazy"/>
+        <span class="card-badge spicy">🌶 Spicy</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Crispy Chicken Burger</div>
+          <div class="card-price">₹209</div>
+        </div>
+        <p class="card-desc">Fried chicken thigh with sriracha mayo, coleslaw & jalapeños. Seriously addictive.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.7</strong><span>(143)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Crispy Chicken Burger', '₹209')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIZZA -->
+    <div class="menu-card" data-category="pizza"
+         data-name="Margherita Pizza"
+         data-price="₹299"
+         data-desc="The timeless classic — hand-stretched thin crust with rich San Marzano tomato sauce, fresh mozzarella, and fragrant basil leaves, finished with olive oil."
+         data-img="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80"
+         data-badge="veg" data-badge-label="Veg" data-rating="4.6">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80" alt="Margherita Pizza" loading="lazy"/>
+        <span class="card-badge veg">Veg</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Classic Margherita</div>
+          <div class="card-price">₹299</div>
+        </div>
+        <p class="card-desc">Thin crust, San Marzano sauce, fresh mozzarella, and fragrant basil. Pure perfection.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.6</strong><span>(201)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Classic Margherita Pizza', '₹299')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card" data-category="pizza"
+         data-name="BBQ Chicken Pizza"
+         data-price="₹379"
+         data-desc="Smoky BBQ base topped with shredded chicken, caramelised onions, roasted peppers, and a generous blend of mozzarella and cheddar."
+         data-img="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80"
+         data-badge="bestseller" data-badge-label="Bestseller" data-rating="4.8">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="BBQ Chicken Pizza" loading="lazy"/>
+        <span class="card-badge bestseller">Bestseller</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">BBQ Chicken Pizza</div>
+          <div class="card-price">₹379</div>
+        </div>
+        <p class="card-desc">Smoky BBQ base with shredded chicken, caramelised onions, and double cheese.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.8</strong><span>(167)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('BBQ Chicken Pizza', '₹379')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRINKS -->
+    <div class="menu-card" data-category="drinks"
+         data-name="Mango Lassi"
+         data-price="₹99"
+         data-desc="Thick, chilled yoghurt blended with ripe Alphonso mangoes, a touch of cardamom, and honey. The perfect Indian summer cooler."
+         data-img="https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=600&q=80"
+         data-badge="veg" data-badge-label="Veg" data-rating="4.7">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=600&q=80" alt="Mango Lassi" loading="lazy"/>
+        <span class="card-badge veg">Veg</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Mango Lassi</div>
+          <div class="card-price">₹99</div>
+        </div>
+        <p class="card-desc">Thick yoghurt blended with Alphonso mangoes and cardamom. Chilled and refreshing.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.7</strong><span>(130)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Mango Lassi', '₹99')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card" data-category="drinks"
+         data-name="Cold Brew Coffee"
+         data-price="₹149"
+         data-desc="18-hour cold-steeped single-origin coffee concentrate, served over ice with a splash of oat milk. Smooth, bold, and never bitter."
+         data-img="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80"
+         data-badge="new" data-badge-label="New" data-rating="4.6">
+      <div class="card-img-wrap">
+        <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=80" alt="Cold Brew Coffee" loading="lazy"/>
+        <span class="card-badge new">New</span>
+        <button class="card-fav" onclick="event.stopPropagation(); toggleFav(this)"><i class="fas fa-heart"></i></button>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <div class="card-name">Cold Brew Coffee</div>
+          <div class="card-price">₹149</div>
+        </div>
+        <p class="card-desc">18-hour cold-steeped single-origin coffee over ice. Smooth, bold, never bitter.</p>
+        <div class="card-footer">
+          <div class="card-rating"><i class="fas fa-star"></i><strong>4.6</strong><span>(88)</span></div>
+          <button class="btn-order" onclick="event.stopPropagation(); orderOnWhatsApp('Cold Brew Coffee', '₹149')">
+            <i class="fab fa-whatsapp"></i> Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /menu-grid -->
+</section>
+
+<!-- ===== FEATURED BANNER ===== -->
+<div class="featured-banner">
+  <div class="featured-banner-bg"></div>
+  <div class="featured-banner-overlay"></div>
+  <div class="featured-content">
+    <p>🎉 Special Weekend Offer</p>
+    <h2>20% off on <em>Family Combos</em></h2>
+    <span>Valid Sat–Sun · Use code WEEKEND20 on WhatsApp</span>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-brand">
+    <div class="nav-logo" style="margin-bottom:6px">
+      <div class="nav-logo-icon">🍽️</div>
+      <div class="nav-logo-text">Spice<span style="color:var(--primary)">&Co.</span></div>
+    </div>
+    <p>Open daily · 11 AM – 11 PM · Guwahati, Assam</p>
+  </div>
+  <div class="footer-links">
+    <a href="#">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="tel:+919876543210">Call Us</a>
+    <a href="https://wa.me/919876543210" target="_blank">WhatsApp</a>
+  </div>
+  <div class="footer-social">
+    <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://wa.me/919876543210" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+  </div>
+</footer>
+
+<!-- ===== FLOATING WHATSAPP ===== -->
+<a href="https://wa.me/919876543210?text=Hi!%20I%27d%20like%20to%20place%20an%20order." target="_blank" class="whatsapp-float">
+  <i class="fab fa-whatsapp" style="font-size:1.3rem"></i>
+  <span>Order on WhatsApp</span>
+</a>
+
+<!-- ===== ITEM MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="itemModal">
+    <button class="modal-x" id="modalClose"><i class="fas fa-times"></i></button>
+    <img src="" alt="" class="modal-img" id="modalImg"/>
+    <div class="modal-body">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-price" id="modalPrice"></div>
+      </div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <button class="modal-close" id="modalOrderBtn">
+        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== CATEGORY FILTER =====
+  const tabs = document.querySelectorAll('.tab-btn');
+  const cards = document.querySelectorAll('.menu-card');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.dataset.filter;
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.classList.remove('hidden');
+          card.style.animation = 'none';
+          requestAnimationFrame(() => {
+            card.style.animation = 'fadeIn 0.35s ease';
+          });
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Inject fadeIn keyframe
+  const style = document.createElement('style');
+  style.textContent = '@keyframes fadeIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }';
+  document.head.appendChild(style);
+
+  // ===== FAVOURITE TOGGLE =====
+  function toggleFav(btn) {
+    btn.classList.toggle('active');
+    btn.innerHTML = btn.classList.contains('active')
+      ? '<i class="fas fa-heart"></i>'
+      : '<i class="fas fa-heart"></i>';
+    btn.style.color = btn.classList.contains('active') ? '#e74c3c' : '';
+  }
+
+  // ===== WHATSAPP ORDER =====
+  const WA_NUMBER = '919876543210';
+
+  function orderOnWhatsApp(name, price) {
+    const msg = encodeURIComponent(`Hi! I'd like to order:\n\n🍽️ *${name}* — ${price}\n\nPlease confirm availability and delivery time. Thank you!`);
+    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+  }
+
+  // ===== MODAL =====
+  const overlay = document.getElementById('modalOverlay');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalPrice = document.getElementById('modalPrice');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalOrderBtn = document.getElementById('modalOrderBtn');
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      modalImg.src = card.dataset.img;
+      modalImg.alt = card.dataset.name;
+      modalTitle.textContent = card.dataset.name;
+      modalPrice.textContent = card.dataset.price;
+      modalDesc.textContent = card.dataset.desc;
+      modalOrderBtn.onclick = () => orderOnWhatsApp(card.dataset.name, card.dataset.price);
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

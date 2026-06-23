@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Safareasy - Travel Made Simple</title>
+  <meta name="description" content="Safareasy by Ovatree International Pvt. Ltd. - Your trusted Guwahati-based travel partner for flights, hotel reservations, holiday packages and more."/>
+  <link rel="icon" type="image/x-icon" href="images/safareasy-favicon.ico"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <!-- <a href="index.html" class="logo-img-wrap">
+      <img src="images/safareasy-logo-white.png" alt="Safareasy" class="logo-img logo-light"/>
+      <img src="images/safareasy-logo.png"       alt="Safareasy" class="logo-img logo-dark"/>
+    </a> -->
+    <a href="index.html" class="logo"><span class="logo-safe">Safar</span><span class="logo-reasy">easy</span></a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="pages/about.html">About Us</a></li>
+      <li><a href="pages/services.html">Services</a></li>
+      <li><a href="pages/destinations.html">Destinations</a></li>
+      <li><a href="pages/packages.html">Packages</a></li>
+      <li><a href="pages/blog.html">Blog</a></li>
+      <li><a href="pages/contact.html" class="btn-nav">Contact Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-label">
+    <span class="hl-line"></span>
+    <span>Ovatree International Pvt. Ltd.</span>
+    <span class="hl-line"></span>
+  </div>
+
+  <div class="hero-content">
+    <h1 class="hero-heading">
+      <span class="hh-light">Every journey</span><br>
+      <span class="hh-bold">tells a story.</span>
+    </h1>
+    <p class="hero-tagline">Har Safar Ka Humsafar</p>
+    <div class="hero-cta-row">
+      <a href="pages/packages.html" class="btn-hero-primary">Explore Packages</a>
+      <span class="hero-divider-dot">·</span>
+      <a href="pages/contact.html" class="btn-hero-ghost">Plan My Trip</a>
+    </div>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-dest-strip">
+      <span class="hd-label">Popular:</span>
+      <a href="pages/destinations.html">Meghalaya</a>
+      <span>·</span>
+      <a href="pages/destinations.html">Sikkim</a>
+      <span>·</span>
+      <a href="pages/destinations.html">Bali</a>
+      <span>·</span>
+      <a href="pages/destinations.html">Thailand</a>
+      <span>·</span>
+      <a href="pages/destinations.html">Dubai</a>
+      <span>·</span>
+      <a href="pages/destinations.html">Goa</a>
+    </div>
+    <div class="hero-scroll-line">
+      <div class="hsl-track"><div class="hsl-fill"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SEARCH BAR ===== -->
+<section class="search-bar-section">
+  <div class="search-bar-card">
+    <div class="search-tabs">
+      <button class="stab active">✈️ Flights</button>
+      <button class="stab">🏨 Hotels</button>
+      <button class="stab">🌴 Packages</button>
+    </div>
+    <form class="search-form" action="pages/contact.html">
+      <div class="sf-group">
+        <label>From</label>
+        <input type="text" placeholder="City or Airport"/>
+      </div>
+      <div class="sf-group">
+        <label>To</label>
+        <input type="text" placeholder="Destination"/>
+      </div>
+      <div class="sf-group">
+        <label>Depart</label>
+        <input type="date"/>
+      </div>
+      <div class="sf-group">
+        <label>Travellers</label>
+        <select>
+          <option>1 Adult</option>
+          <option>2 Adults</option>
+          <option>Family</option>
+          <option>Group</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary search-btn">Search</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== USP STRIP ===== -->
+<section class="usp-section">
+  <div class="container">
+    <div class="usp-grid">
+      <div class="usp-card">
+        <i class="fas fa-tag"></i>
+        <h3>Instant Discounts</h3>
+        <p>Exclusive fare deals on every booking</p>
+      </div>
+      <div class="usp-card">
+        <i class="fas fa-lock"></i>
+        <h3>Transparent Pricing</h3>
+        <p>No hidden charges. Ever.</p>
+      </div>
+      <div class="usp-card">
+        <i class="fas fa-headset"></i>
+        <h3>24/7 Support</h3>
+        <p>We're always here when you need us</p>
+      </div>
+      <div class="usp-card">
+        <i class="fas fa-route"></i>
+        <h3>Custom Itineraries</h3>
+        <p>Trips planned just the way you like</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT SNIPPET ===== -->
+<section class="about-snippet section-pad">
+  <div class="container flex-row">
+    <div class="about-img-wrap">
+      <img src="images/about-travel.jpg" alt="Safareasy Travel Team" loading="lazy"/>
+      <div class="about-badge">
+        <span class="ab-num">5+</span>
+        <span class="ab-label">Years of Trust</span>
+      </div>
+    </div>
+    <div class="about-text">
+      <span class="section-label">Who We Are</span>
+      <h2>Your Trusted Travel Partner Since 2019</h2>
+      <p>Safareasy is a Guwahati-based travel brand under <strong>Ovatree International Private Limited</strong>, born with one goal — to make quality travel accessible to everyone. From budget flyers to luxury seekers, we craft experiences that fit your dreams and your budget.</p>
+      <p>Headquartered in the heart of Assam, we serve travellers across Northeast India and beyond, offering everything from quick flight bookings to full-service holiday packages.</p>
+      <ul class="about-list">
+        <li><i class="fas fa-check-circle"></i> Domestic & International Flights</li>
+        <li><i class="fas fa-check-circle"></i> Holiday Packages & Hotel Reservations</li>
+        <li><i class="fas fa-check-circle"></i> Visa Assistance & Travel Documents</li>
+        <li><i class="fas fa-check-circle"></i> Cruise & Transport Bookings</li>
+      </ul>
+      <a href="pages/about.html" class="btn btn-primary">Read Our Story</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services-section section-pad bg-light">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">What We Offer</span>
+      <h2>Our Services</h2>
+      <p>Comprehensive travel solutions under one roof</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="sc-icon"><i class="fas fa-plane-departure"></i></div>
+        <h3>Flight Bookings</h3>
+        <p>Domestic & international flights at best fares with instant discounts.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon"><i class="fas fa-hotel"></i></div>
+        <h3>Hotel Reservations</h3>
+        <p>Curated accommodations from budget to luxury worldwide.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon"><i class="fas fa-umbrella-beach"></i></div>
+        <h3>Holiday Packages</h3>
+        <p>Beach, adventure, cultural, and honeymoon packages crafted for you.</p>
+        <a href="pages/packages.html">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon"><i class="fas fa-file-alt"></i></div>
+        <h3>Visa Assistance</h3>
+        <p>Hassle-free visa, passport, and travel document support.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon"><i class="fas fa-ship"></i></div>
+        <h3>Cruise Bookings</h3>
+        <p>Explore the seas with our handpicked cruise packages.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+      <div class="service-card">
+        <div class="sc-icon"><i class="fas fa-map-marked-alt"></i></div>
+        <h3>Travel Consultancy</h3>
+        <p>Personalised travel planning from our experienced consultants.</p>
+        <a href="pages/services.html">Learn More →</a>
+      </div>
+    </div>
+    <div class="text-center mt-40">
+      <a href="pages/services.html" class="btn btn-primary">View All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== POPULAR DESTINATIONS ===== -->
+<section class="destinations-section section-pad">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Explore</span>
+      <h2>Popular Destinations</h2>
+      <p>From Northeast India to the world — find your next adventure</p>
+    </div>
+    <div class="dest-grid">
+      <div class="dest-card big">
+        <img src="images/dest-kaziranga.jpg" alt="Kaziranga" loading="lazy"/>
+        <div class="dest-info"><h3>Kaziranga</h3><span>Assam, India</span></div>
+      </div>
+      <div class="dest-card">
+        <img src="images/dest-meghalaya.jpg" alt="Meghalaya" loading="lazy"/>
+        <div class="dest-info"><h3>Meghalaya</h3><span>Northeast India</span></div>
+      </div>
+      <div class="dest-card">
+        <img src="images/dest-sikkim.jpg" alt="Sikkim" loading="lazy"/>
+        <div class="dest-info"><h3>Sikkim</h3><span>Northeast India</span></div>
+      </div>
+      <div class="dest-card">
+        <img src="images/dest-bali.jpg" alt="Bali" loading="lazy"/>
+        <div class="dest-info"><h3>Bali</h3><span>Indonesia</span></div>
+      </div>
+      <div class="dest-card">
+        <img src="images/dest-thailand.jpg" alt="Thailand" loading="lazy"/>
+        <div class="dest-info"><h3>Thailand</h3><span>Southeast Asia</span></div>
+      </div>
+    </div>
+    <div class="text-center mt-40">
+      <a href="pages/destinations.html" class="btn btn-outline-dark">View All Destinations</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><span class="stat-num">5000+</span><span class="stat-label">Happy Travellers</span></div>
+      <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Destinations</span></div>
+      <div class="stat-item"><span class="stat-num">100+</span><span class="stat-label">Holiday Packages</span></div>
+      <div class="stat-item"><span class="stat-num">5+</span><span class="stat-label">Years of Experience</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testimonials-section section-pad bg-light">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">What Travellers Say</span>
+      <h2>Real Stories, Real Experiences</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"Safareasy made our Meghalaya trip absolutely seamless. From booking to the last day, everything was perfectly planned. Highly recommended!"</p>
+        <div class="testi-author">
+          <div class="ta-avatar">PR</div>
+          <div><strong>Priya R.</strong><span>Guwahati</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"Got the best flight deals for my Bangkok trip. The team was super responsive and the pricing was completely transparent. No surprises!"</p>
+        <div class="testi-author">
+          <div class="ta-avatar">AM</div>
+          <div><strong>Amit M.</strong><span>Assam</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>"They handled our family holiday package to Sikkim beautifully. Hotels, transport, activities — all sorted. Will definitely travel with them again."</p>
+        <div class="testi-author">
+          <div class="ta-avatar">SD</div>
+          <div><strong>Sunita D.</strong><span>Jorhat</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2>Ready to Plan Your Dream Trip?</h2>
+      <p>Talk to our travel experts and get a free personalised itinerary today.</p>
+      <div class="cta-btns">
+        <a href="pages/contact.html" class="btn btn-white">Get Free Itinerary</a>
+        <a href="https://wa.me/919XXXXXXXXX" target="_blank" class="btn btn-whatsapp">
+          <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="index.html" class="logo-img-wrap">
+          <img src="images/safareasy-logo-white.png" alt="Safareasy" class="logo-img footer-logo-img"/>
+        </a>
+        <p>A brand of Ovatree International Private Limited. Your trusted travel partner from the heart of Assam.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="pages/about.html">About Us</a></li>
+          <li><a href="pages/services.html">Services</a></li>
+          <li><a href="pages/destinations.html">Destinations</a></li>
+          <li><a href="pages/packages.html">Packages</a></li>
+          <li><a href="pages/blog.html">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="pages/services.html">Flight Bookings</a></li>
+          <li><a href="pages/services.html">Hotel Reservations</a></li>
+          <li><a href="pages/services.html">Holiday Packages</a></li>
+          <li><a href="pages/services.html">Visa Assistance</a></li>
+          <li><a href="pages/services.html">Cruise Booking</a></li>
+          <li><a href="pages/services.html">Travel Consultancy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul class="footer-contact">
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            152, Rajgarh Main Road, Bhangagarh, Ulubari, Guwahati - 781007, Assam
+          </li>
+          <li><i class="fas fa-phone"></i><a href="tel:+919XXXXXXXXX">+91 9XXX XXX XXX</a></li>
+          <li><i class="fas fa-envelope"></i><a href="mailto:info@safareasy.com">info@safareasy.com</a></li>
+          <li><i class="fab fa-whatsapp"></i><a href="https://wa.me/919XXXXXXXXX" target="_blank">WhatsApp Us</a></li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Safareasy. A brand of Ovatree International Pvt. Ltd. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/919XXXXXXXXX" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<script src="js/main.js"></script>
+</body>
+</html>

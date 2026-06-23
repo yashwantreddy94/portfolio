@@ -1,0 +1,44 @@
+safareasy-website/
+│
+├── index.html                  ← Homepage
+│
+├── css/
+│   └── style.css               ← All styles
+│
+├── js/
+│   └── main.js                 ← All JS logic
+│
+├── pages/
+│   ├── about.html              ← About Us
+│   ├── services.html           ← Services
+│   ├── destinations.html       ← Destinations
+│   ├── packages.html           ← Holiday Packages
+│   ├── blog.html               ← Blog
+│   └── contact.html            ← Contact Us
+│
+└── images/
+    ├── hero-bg.jpg             ← Hero background
+    ├── about-travel.jpg        ← About section
+    ├── about-story.jpg         ← About page
+    ├── dest-kaziranga.jpg      ← Destination images
+    ├── dest-meghalaya.jpg
+    ├── dest-sikkim.jpg
+    ├── dest-arunachal.jpg
+    ├── dest-goa.jpg
+    ├── dest-kerala.jpg
+    ├── dest-bali.jpg
+    ├── dest-thailand.jpg
+    ├── dest-dubai.jpg
+    ├── pkg-kaziranga.jpg       ← Package images
+    ├── pkg-meghalaya.jpg
+    ├── pkg-sikkim.jpg
+    ├── pkg-goa.jpg
+    ├── pkg-bali.jpg
+    ├── pkg-thailand.jpg
+    ├── blog-northeast.jpg      ← Blog images
+    ├── blog-visa.jpg
+    ├── blog-budget.jpg
+    ├── blog-honeymoon.jpg
+    ├── blog-packing.jpg
+    ├── blog-assam.jpg
+    └── custom-holiday.jpg

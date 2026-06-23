@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EstateEdge – Find Your Dream Property</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1a3c5e;
+      --primary-light: #2563a8;
+      --accent: #e8a020;
+      --accent-light: #fbbf24;
+      --dark: #0f1e30;
+      --text: #334155;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --card-shadow: 0 4px 24px rgba(26,60,94,0.09);
+      --card-shadow-hover: 0 12px 40px rgba(26,60,94,0.18);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    ul { list-style: none; }
+    input, select, textarea, button { font-family: inherit; }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 4px; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: var(--transition);
+    }
+    .navbar.scrolled { box-shadow: 0 4px 20px rgba(26,60,94,0.12); }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--primary);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-logo-icon {
+      width: 36px; height: 36px; background: var(--primary);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-icon i { color: var(--accent); font-size: 0.9rem; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a {
+      font-size: 0.9rem; font-weight: 500; color: var(--text);
+      position: relative; padding: 4px 0; transition: var(--transition);
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--primary); color: var(--white) !important;
+      padding: 9px 20px !important; border-radius: var(--radius-sm);
+      transition: var(--transition) !important;
+    }
+    .nav-cta:hover { background: var(--primary-light) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--primary); border-radius: 2px;
+      transition: var(--transition);
+    }
+    .mobile-menu {
+      display: none; position: fixed; top: 68px; left: 0; right: 0;
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem; flex-direction: column; gap: 1rem;
+      box-shadow: 0 8px 20px rgba(26,60,94,0.1); z-index: 999;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 1rem; font-weight: 500; padding: 8px 0; border-bottom: 1px solid var(--border); }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 60%, #1e4d7a 100%);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center;
+      padding-top: 68px;
+    }
+    .hero-bg-pattern {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-blob {
+      position: absolute; border-radius: 50%;
+      background: rgba(232,160,32,0.08);
+      filter: blur(60px);
+    }
+    .hero-blob-1 { width: 500px; height: 500px; top: -100px; right: -100px; }
+    .hero-blob-2 { width: 300px; height: 300px; bottom: 50px; left: 10%; background: rgba(37,99,168,0.15); }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 1200px; margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,160,32,0.15); border: 1px solid rgba(232,160,32,0.3);
+      color: var(--accent-light); border-radius: 30px;
+      padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      color: var(--white); line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-subtitle {
+      color: rgba(255,255,255,0.7);
+      font-size: 1.05rem; margin-bottom: 2.5rem; max-width: 480px;
+    }
+    .hero-stats {
+      display: flex; gap: 2rem; margin-top: 2.5rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .hero-visual {
+      position: relative;
+    }
+    .hero-card-stack {
+      position: relative; height: 420px;
+    }
+    .hero-prop-card {
+      position: absolute; background: var(--white);
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .hero-prop-card.main {
+      width: 320px; right: 0; top: 0;
+    }
+    .hero-prop-card.secondary {
+      width: 240px; left: 0; bottom: 40px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+    .hero-card-img {
+      height: 180px; overflow: hidden;
+    }
+    .hero-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-card-body { padding: 1rem; }
+    .hero-card-price { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+    .hero-card-loc { font-size: 0.8rem; color: var(--text-light); margin-top: 2px; }
+    .hero-card-loc i { color: var(--accent); margin-right: 4px; }
+    .hero-card-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--accent); color: var(--white);
+      font-size: 0.7rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px; text-transform: uppercase;
+    }
+    .floating-tag {
+      position: absolute; background: var(--white);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .floating-tag.verified { top: 200px; right: 330px; }
+    .floating-tag i { color: #22c55e; font-size: 1rem; }
+    .floating-tag span { font-size: 0.75rem; font-weight: 600; color: var(--primary); }
+
+    /* ===== SEARCH BAR ===== */
+    .search-section {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 68px; z-index: 100;
+      box-shadow: 0 4px 20px rgba(26,60,94,0.06);
+    }
+    .search-container { max-width: 1200px; margin: 0 auto; }
+    .search-title {
+      text-align: center; font-size: 1.5rem; font-weight: 700;
+      color: var(--primary); margin-bottom: 1.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .search-tabs {
+      display: flex; gap: 8px; margin-bottom: 1.25rem; justify-content: center;
+    }
+    .search-tab {
+      padding: 8px 20px; border-radius: 20px; border: 2px solid var(--border);
+      background: transparent; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+      color: var(--text-light); transition: var(--transition);
+    }
+    .search-tab.active {
+      background: var(--primary); color: var(--white); border-color: var(--primary);
+    }
+    .search-bar {
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 12px;
+      background: var(--white); border-radius: var(--radius);
+      border: 2px solid var(--border); padding: 12px; align-items: center;
+    }
+    .search-field {
+      display: flex; flex-direction: column; gap: 2px; padding: 0 12px;
+      border-right: 1px solid var(--border);
+    }
+    .search-field:last-of-type { border-right: none; }
+    .search-field label { font-size: 0.7rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; }
+    .search-field input, .search-field select {
+      border: none; outline: none; font-size: 0.95rem; font-weight: 500;
+      color: var(--text); background: transparent; cursor: pointer;
+    }
+    .search-field select option { color: var(--text); }
+    .search-btn {
+      background: var(--primary); color: var(--white);
+      border: none; border-radius: var(--radius-sm);
+      padding: 14px 28px; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; gap: 8px; white-space: nowrap;
+    }
+    .search-btn:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .filter-pills {
+      display: flex; gap: 8px; margin-top: 1rem; flex-wrap: wrap;
+    }
+    .filter-pill {
+      padding: 5px 14px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; font-size: 0.8rem; font-weight: 500;
+      cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 5px;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: var(--primary); color: var(--white); border-color: var(--primary);
+    }
+
+    /* ===== SECTION BASE ===== */
+    .section { padding: 5rem 2rem; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-header { margin-bottom: 3rem; }
+    .section-label {
+      font-size: 0.78rem; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--primary); line-height: 1.2;
+    }
+    .section-subtitle { color: var(--text-light); margin-top: 0.75rem; font-size: 0.95rem; }
+    .section-header-flex {
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem;
+    }
+    .view-all {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--primary-light); font-weight: 600; font-size: 0.9rem;
+      transition: var(--transition); white-space: nowrap;
+    }
+    .view-all:hover { gap: 10px; }
+
+    /* ===== PROPERTY CARDS ===== */
+    .properties-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 1.75rem;
+    }
+    .prop-card {
+      background: var(--white); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--card-shadow);
+      transition: var(--transition); cursor: pointer; position: relative;
+    }
+    .prop-card:hover {
+      transform: translateY(-6px); box-shadow: var(--card-shadow-hover);
+    }
+    .prop-img {
+      position: relative; height: 220px; overflow: hidden;
+    }
+    .prop-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .prop-card:hover .prop-img img { transform: scale(1.07); }
+    .prop-badges {
+      position: absolute; top: 12px; left: 12px;
+      display: flex; gap: 6px;
+    }
+    .badge {
+      padding: 4px 10px; border-radius: 20px;
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    }
+    .badge-sale { background: var(--accent); color: var(--white); }
+    .badge-rent { background: var(--primary-light); color: var(--white); }
+    .badge-new { background: #22c55e; color: var(--white); }
+    .badge-featured { background: #ef4444; color: var(--white); }
+    .prop-wishlist {
+      position: absolute; top: 12px; right: 12px;
+      width: 34px; height: 34px; background: var(--white);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: var(--transition);
+      cursor: pointer; border: none;
+    }
+    .prop-wishlist:hover { transform: scale(1.1); }
+    .prop-wishlist i { color: #cbd5e1; font-size: 0.85rem; transition: var(--transition); }
+    .prop-wishlist.liked i { color: #ef4444; }
+    .prop-gallery-dots {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 4px;
+    }
+    .gallery-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.5); cursor: pointer; transition: var(--transition);
+    }
+    .gallery-dot.active { background: var(--white); width: 18px; border-radius: 3px; }
+    .prop-body { padding: 1.25rem; }
+    .prop-price {
+      font-size: 1.35rem; font-weight: 800; color: var(--primary); line-height: 1;
+    }
+    .prop-price sub { font-size: 0.7rem; color: var(--text-light); font-weight: 400; }
+    .prop-title {
+      font-size: 1rem; font-weight: 600; color: var(--dark);
+      margin: 6px 0 4px; line-height: 1.4;
+    }
+    .prop-location {
+      font-size: 0.82rem; color: var(--text-light);
+      display: flex; align-items: center; gap: 4px; margin-bottom: 1rem;
+    }
+    .prop-location i { color: var(--accent); }
+    .prop-features {
+      display: flex; gap: 1rem; padding: 1rem 0;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .prop-feat {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.82rem; color: var(--text-light); font-weight: 500;
+    }
+    .prop-feat i { color: var(--primary-light); font-size: 0.85rem; }
+    .prop-footer {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .agent-mini {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .agent-mini-img {
+      width: 28px; height: 28px; border-radius: 50%; overflow: hidden;
+      border: 2px solid var(--border);
+    }
+    .agent-mini-img img { width: 100%; height: 100%; object-fit: cover; }
+    .agent-mini-name { font-size: 0.78rem; color: var(--text-light); font-weight: 500; }
+    .prop-cta {
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--primary); font-size: 0.8rem; font-weight: 600;
+      padding: 6px 14px; border-radius: var(--radius-sm);
+      cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 4px;
+    }
+    .prop-cta:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+    /* ===== FEATURED SECTION ===== */
+    .featured-section { background: var(--primary); }
+    .featured-section .section-label { color: var(--accent-light); }
+    .featured-section .section-title { color: var(--white); }
+    .featured-section .section-subtitle { color: rgba(255,255,255,0.6); }
+    .featured-grid {
+      display: grid; grid-template-columns: 1.6fr 1fr;
+      gap: 1.5rem; grid-template-rows: auto auto;
+    }
+    .featured-main {
+      grid-row: span 2; position: relative; border-radius: var(--radius);
+      overflow: hidden; min-height: 460px; cursor: pointer;
+    }
+    .featured-main img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .featured-main:hover img { transform: scale(1.05); }
+    .featured-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 50%);
+    }
+    .featured-info {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 1.75rem;
+    }
+    .featured-price { font-size: 1.6rem; font-weight: 800; color: var(--white); }
+    .featured-title { font-size: 1.1rem; font-weight: 600; color: var(--white); margin: 4px 0; }
+    .featured-loc { font-size: 0.85rem; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 5px; }
+    .featured-side {
+      border-radius: var(--radius); overflow: hidden;
+      position: relative; cursor: pointer; min-height: 215px;
+    }
+    .featured-side img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .featured-side:hover img { transform: scale(1.05); }
+    .featured-side .featured-overlay { background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 60%); }
+    .featured-side .featured-info { padding: 1rem 1.25rem; }
+    .featured-side .featured-price { font-size: 1.2rem; }
+    .featured-side .featured-title { font-size: 0.9rem; }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-section { background: var(--white); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+    }
+    .step-item { text-align: center; position: relative; }
+    .step-item:not(:last-child)::after {
+      content: ''; position: absolute; top: 30px; right: -1rem;
+      width: calc(100% - 60px); height: 2px;
+      background: linear-gradient(to right, var(--border), transparent);
+      left: calc(50% + 30px);
+    }
+    .step-icon {
+      width: 60px; height: 60px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.25rem; position: relative; z-index: 1;
+    }
+    .step-icon i { color: var(--white); font-size: 1.3rem; }
+    .step-num {
+      position: absolute; top: -8px; right: -8px;
+      width: 22px; height: 22px; background: var(--accent);
+      border-radius: 50%; font-size: 0.7rem; font-weight: 700;
+      color: var(--white); display: flex; align-items: center; justify-content: center;
+    }
+    .step-title { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; }
+    .step-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.6; }
+
+    /* ===== AGENTS ===== */
+    .agents-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;
+    }
+    .agent-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2rem; text-align: center;
+      box-shadow: var(--card-shadow); transition: var(--transition);
+    }
+    .agent-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+    .agent-img {
+      width: 80px; height: 80px; border-radius: 50%;
+      overflow: hidden; margin: 0 auto 1rem;
+      border: 3px solid var(--border);
+    }
+    .agent-img img { width: 100%; height: 100%; object-fit: cover; }
+    .agent-name { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
+    .agent-title { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin: 2px 0 0.75rem; }
+    .agent-stats {
+      display: flex; justify-content: center; gap: 1.5rem;
+      padding: 0.75rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .agent-stat-val { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .agent-stat-lbl { font-size: 0.7rem; color: var(--text-light); }
+    .agent-socials {
+      display: flex; justify-content: center; gap: 10px;
+    }
+    .agent-social {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+      color: var(--text-light); font-size: 0.8rem; transition: var(--transition); cursor: pointer;
+    }
+    .agent-social:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials-section { background: var(--bg); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .testimonial-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 1.75rem; box-shadow: var(--card-shadow);
+      transition: var(--transition); position: relative;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+    .testimonial-quote {
+      font-size: 3rem; color: var(--accent); line-height: 0.8;
+      margin-bottom: 0.75rem; font-family: Georgia, serif;
+    }
+    .testimonial-text { font-size: 0.9rem; color: var(--text); line-height: 1.7; margin-bottom: 1.25rem; }
+    .testimonial-author { display: flex; align-items: center; gap: 10px; }
+    .testimonial-author-img {
+      width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid var(--border);
+    }
+    .testimonial-author-img img { width: 100%; height: 100%; object-fit: cover; }
+    .testimonial-name { font-size: 0.9rem; font-weight: 700; color: var(--primary); }
+    .testimonial-role { font-size: 0.75rem; color: var(--text-light); }
+    .testimonial-stars { color: var(--accent); font-size: 0.8rem; margin-bottom: 0.75rem; }
+
+    /* ===== INQUIRY / CONTACT ===== */
+    .inquiry-section {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+    }
+    .inquiry-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    .inquiry-label { color: var(--accent-light); }
+    .inquiry-title { color: var(--white); }
+    .inquiry-subtitle { color: rgba(255,255,255,0.65); }
+    .inquiry-perks { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .perk-item { display: flex; align-items: flex-start; gap: 14px; }
+    .perk-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(232,160,32,0.15); border: 1px solid rgba(232,160,32,0.2);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .perk-icon i { color: var(--accent); font-size: 0.95rem; }
+    .perk-text h4 { font-size: 0.95rem; font-weight: 600; color: var(--white); }
+    .perk-text p { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
+    .inquiry-form {
+      background: var(--white); border-radius: var(--radius);
+      padding: 2.25rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .form-title { font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; }
+    .form-subtitle { font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.75rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%; padding: 11px 14px; border: 2px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 0.9rem; color: var(--text);
+      transition: var(--transition); background: var(--white); outline: none;
+    }
+    .form-control:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(37,99,168,0.1); }
+    .form-control::placeholder { color: #94a3b8; }
+    textarea.form-control { resize: vertical; min-height: 100px; }
+    .form-select {
+      width: 100%; padding: 11px 14px; border: 2px solid var(--border);
+      border-radius: var(--radius-sm); font-size: 0.9rem; color: var(--text);
+      transition: var(--transition); background: var(--white); outline: none; cursor: pointer;
+    }
+    .form-select:focus { border-color: var(--primary-light); }
+    .form-check { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 1.25rem; }
+    .form-check input { margin-top: 3px; accent-color: var(--primary); }
+    .form-check label { font-size: 0.8rem; color: var(--text-light); }
+    .form-check a { color: var(--primary-light); text-decoration: underline; }
+    .btn-submit {
+      width: 100%; padding: 14px; background: var(--primary);
+      color: var(--white); border: none; border-radius: var(--radius-sm);
+      font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { background: var(--primary-light); transform: translateY(-1px); }
+    .form-success {
+      display: none; text-align: center; padding: 2rem;
+    }
+    .form-success i { font-size: 3rem; color: #22c55e; margin-bottom: 1rem; }
+    .form-success h3 { color: var(--primary); margin-bottom: 0.5rem; }
+    .form-success p { color: var(--text-light); font-size: 0.9rem; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: var(--dark); color: rgba(255,255,255,0.7);
+      padding: 4rem 2rem 2rem;
+    }
+    .footer-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 3rem;
+      padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand { }
+    .footer-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700; color: var(--white); margin-bottom: 1rem;
+    }
+    .footer-logo span { color: var(--accent); }
+    .footer-desc { font-size: 0.88rem; line-height: 1.7; max-width: 280px; }
+    .footer-socials { display: flex; gap: 10px; margin-top: 1.25rem; }
+    .footer-social {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.6); font-size: 0.9rem;
+      transition: var(--transition); cursor: pointer;
+    }
+    .footer-social:hover { background: var(--accent); border-color: var(--accent); color: var(--white); }
+    .footer-col h4 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 1.25rem; }
+    .footer-links { display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-links a { font-size: 0.87rem; transition: var(--transition); }
+    .footer-links a:hover { color: var(--white); padding-left: 4px; }
+    .footer-newsletter input {
+      width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm);
+      color: var(--white); font-size: 0.88rem; outline: none; margin-bottom: 8px;
+    }
+    .footer-newsletter input::placeholder { color: rgba(255,255,255,0.4); }
+    .footer-newsletter button {
+      width: 100%; padding: 10px 14px; background: var(--accent);
+      color: var(--white); border: none; border-radius: var(--radius-sm);
+      font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: var(--transition);
+    }
+    .footer-newsletter button:hover { background: var(--accent-light); }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      padding-top: 2rem; display: flex; justify-content: space-between;
+      align-items: center; font-size: 0.82rem; flex-wrap: wrap; gap: 1rem;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+      padding: 2rem 1rem; overflow-y: auto;
+    }
+    .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+    .modal {
+      background: var(--white); border-radius: var(--radius);
+      max-width: 820px; width: 100%; position: relative;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.3); margin: auto;
+    }
+    .modal-header { padding: 0; position: relative; }
+    .modal-gallery {
+      height: 340px; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; position: relative;
+    }
+    .modal-gallery img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .modal-gallery-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      display: flex; justify-content: space-between; width: 100%; padding: 0 1rem;
+    }
+    .gallery-nav-btn {
+      width: 38px; height: 38px; background: rgba(255,255,255,0.9);
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; color: var(--primary); transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .gallery-nav-btn:hover { background: var(--white); transform: translateY(-50%) scale(1.1); }
+    .gallery-counter {
+      position: absolute; bottom: 12px; right: 12px;
+      background: rgba(0,0,0,0.55); color: var(--white);
+      font-size: 0.8rem; padding: 4px 10px; border-radius: 20px;
+    }
+    .modal-close {
+      position: absolute; top: 12px; right: 12px; z-index: 10;
+      width: 36px; height: 36px; background: var(--white);
+      border: none; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; color: var(--primary); transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .modal-close:hover { background: var(--primary); color: var(--white); }
+    .modal-body { padding: 1.75rem; }
+    .modal-price-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .modal-price { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+    .modal-badges { display: flex; gap: 6px; }
+    .modal-title { font-size: 1.2rem; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+    .modal-loc { font-size: 0.88rem; color: var(--text-light); display: flex; align-items: center; gap: 5px; margin-bottom: 1.25rem; }
+    .modal-features {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem; padding: 1.25rem; background: var(--bg);
+      border-radius: var(--radius-sm); margin-bottom: 1.5rem;
+    }
+    .modal-feat { text-align: center; }
+    .modal-feat-icon { font-size: 1.1rem; color: var(--primary-light); margin-bottom: 4px; }
+    .modal-feat-val { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+    .modal-feat-lbl { font-size: 0.72rem; color: var(--text-light); }
+    .modal-desc { font-size: 0.88rem; color: var(--text); line-height: 1.7; margin-bottom: 1.5rem; }
+    .modal-amenities { margin-bottom: 1.75rem; }
+    .modal-amenities h4 { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 0.75rem; }
+    .amenities-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .amenity-tag {
+      padding: 5px 12px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; font-size: 0.78rem; font-weight: 500; color: var(--text);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .amenity-tag i { color: var(--primary-light); font-size: 0.75rem; }
+    .modal-contact-row {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .modal-btn {
+      flex: 1; min-width: 140px; padding: 12px 20px;
+      border-radius: var(--radius-sm); font-size: 0.9rem;
+      font-weight: 600; cursor: pointer; transition: var(--transition);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .modal-btn-primary {
+      background: var(--primary); color: var(--white); border: none;
+    }
+    .modal-btn-primary:hover { background: var(--primary-light); }
+    .modal-btn-outline {
+      background: transparent; color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .modal-btn-outline:hover { background: var(--primary); color: var(--white); }
+    .modal-btn-accent {
+      background: var(--accent); color: var(--white); border: none;
+    }
+    .modal-btn-accent:hover { background: var(--accent-light); }
+
+    /* ===== BACK TO TOP ===== */
+    .back-top {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 500;
+      width: 44px; height: 44px; background: var(--primary);
+      color: var(--white); border: none; border-radius: 12px;
+      cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(26,60,94,0.3);
+      opacity: 0; pointer-events: none; transition: var(--transition);
+    }
+    .back-top.visible { opacity: 1; pointer-events: all; }
+    .back-top:hover { transform: translateY(-3px); background: var(--primary-light); }
+
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed; bottom: 6rem; right: 2rem; z-index: 3000;
+      background: var(--primary); color: var(--white);
+      padding: 12px 20px; border-radius: var(--radius-sm);
+      font-size: 0.88rem; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(26,60,94,0.3);
+      opacity: 0; transform: translateY(20px); transition: var(--transition);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ===== LOADING SKELETON ===== */
+    .skeleton {
+      background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius-sm);
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero-content { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-visual { display: none; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .featured-main { min-height: 300px; grid-row: span 1; }
+      .featured-side { min-height: 200px; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+      .inquiry-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .modal-features { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .search-bar { grid-template-columns: 1fr; gap: 0; border: none; padding: 0; }
+      .search-field { border-right: none; border-bottom: 1px solid var(--border); padding: 12px; border: 2px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 8px; }
+      .search-btn { width: 100%; justify-content: center; }
+      .properties-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .agents-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr; }
+      .step-item::after { display: none; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .modal { margin: 0; }
+      .modal-gallery { height: 220px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon"><i class="fas fa-building"></i></div>
+    Estate<span>Edge</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#listings">Properties</a></li>
+    <li><a href="#featured">Featured</a></li>
+    <li><a href="#agents">Agents</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#contact" class="nav-cta"><i class="fas fa-envelope"></i> Get in Touch</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#listings" onclick="closeMenu()">Properties</a>
+  <a href="#featured" onclick="closeMenu()">Featured</a>
+  <a href="#agents" onclick="closeMenu()">Agents</a>
+  <a href="#how" onclick="closeMenu()">How It Works</a>
+  <a href="#contact" onclick="closeMenu()">Get in Touch</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge"><i class="fas fa-star"></i> #1 Trusted Property Platform</div>
+      <h1 class="hero-title">Find Your <span>Dream</span> Home Today</h1>
+      <p class="hero-subtitle">Explore thousands of properties across India. Trusted by buyers, renters, and investors since 2010.</p>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">12K+</div><div class="stat-label">Properties Listed</div></div>
+        <div class="stat-item"><div class="stat-num">4.8K</div><div class="stat-label">Happy Clients</div></div>
+        <div class="stat-item"><div class="stat-num">350+</div><div class="stat-label">Verified Agents</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hero-prop-card main">
+          <div class="hero-card-badge">For Sale</div>
+          <div class="hero-card-img">
+            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=500&q=80" alt="Modern Villa" />
+          </div>
+          <div class="hero-card-body">
+            <div class="hero-card-price">₹1.85 Cr</div>
+            <div class="hero-card-loc"><i class="fas fa-location-dot"></i> Jubilee Hills, Hyderabad</div>
+          </div>
+        </div>
+        <div class="hero-prop-card secondary">
+          <div class="hero-card-badge">For Rent</div>
+          <div class="hero-card-img" style="height:120px">
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&q=80" alt="Apartment" />
+          </div>
+          <div class="hero-card-body">
+            <div class="hero-card-price" style="font-size:1rem">₹28,000<sub>/mo</sub></div>
+            <div class="hero-card-loc" style="font-size:0.75rem"><i class="fas fa-location-dot"></i> Banjara Hills, Hyd</div>
+          </div>
+        </div>
+        <div class="floating-tag verified">
+          <i class="fas fa-shield-halved"></i>
+          <span>Verified Listing</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SEARCH ===== -->
+<div class="search-section" id="search">
+  <div class="search-container">
+    <div class="search-tabs">
+      <button class="search-tab active" onclick="setTab(this,'buy')">Buy</button>
+      <button class="search-tab" onclick="setTab(this,'rent')">Rent</button>
+      <button class="search-tab" onclick="setTab(this,'plot')">Plots</button>
+      <button class="search-tab" onclick="setTab(this,'commercial')">Commercial</button>
+    </div>
+    <div class="search-bar">
+      <div class="search-field">
+        <label><i class="fas fa-location-dot"></i> Location</label>
+        <input type="text" id="searchLocation" placeholder="City, area or pincode..." />
+      </div>
+      <div class="search-field">
+        <label><i class="fas fa-home"></i> Property Type</label>
+        <select id="searchType">
+          <option value="">All Types</option>
+          <option>Apartment</option>
+          <option>Villa</option>
+          <option>Independent House</option>
+          <option>Plot</option>
+          <option>Studio</option>
+          <option>Penthouse</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label><i class="fas fa-indian-rupee-sign"></i> Budget</label>
+        <select id="searchBudget">
+          <option value="">Any Budget</option>
+          <option value="0-5000000">Under ₹50 L</option>
+          <option value="5000000-10000000">₹50 L – ₹1 Cr</option>
+          <option value="10000000-20000000">₹1 Cr – ₹2 Cr</option>
+          <option value="20000000-50000000">₹2 Cr – ₹5 Cr</option>
+          <option value="50000000+">₹5 Cr+</option>
+        </select>
+      </div>
+      <div class="search-field">
+        <label><i class="fas fa-bed"></i> Bedrooms</label>
+        <select id="searchBeds">
+          <option value="">Any BHK</option>
+          <option value="1">1 BHK</option>
+          <option value="2">2 BHK</option>
+          <option value="3">3 BHK</option>
+          <option value="4">4 BHK</option>
+          <option value="5">5+ BHK</option>
+        </select>
+      </div>
+      <button class="search-btn" onclick="doSearch()"><i class="fas fa-magnifying-glass"></i> Search</button>
+    </div>
+    <div class="filter-pills">
+      <span style="font-size:0.8rem;color:var(--text-light);font-weight:600;padding:5px 0;align-self:center;">Quick:</span>
+      <button class="filter-pill" onclick="quickFilter(this,'ready')"><i class="fas fa-check-circle"></i> Ready to Move</button>
+      <button class="filter-pill" onclick="quickFilter(this,'new')"><i class="fas fa-sparkles"></i> New Launch</button>
+      <button class="filter-pill" onclick="quickFilter(this,'furnished')"><i class="fas fa-couch"></i> Furnished</button>
+      <button class="filter-pill" onclick="quickFilter(this,'verified')"><i class="fas fa-shield-halved"></i> Verified</button>
+      <button class="filter-pill" onclick="quickFilter(this,'pool')"><i class="fas fa-water-ladder"></i> Pool</button>
+      <button class="filter-pill" onclick="quickFilter(this,'gym')"><i class="fas fa-dumbbell"></i> Gym</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LISTINGS ===== -->
+<section class="section" id="listings">
+  <div class="section-inner">
+    <div class="section-header section-header-flex">
+      <div>
+        <p class="section-label">Browse Listings</p>
+        <h2 class="section-title">Latest Properties</h2>
+        <p class="section-subtitle">Hand-picked properties from top builders and verified owners</p>
+      </div>
+      <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="properties-grid" id="propertiesGrid">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED ===== -->
+<section class="section featured-section" id="featured">
+  <div class="section-inner">
+    <div class="section-header section-header-flex">
+      <div>
+        <p class="section-label">Premium Picks</p>
+        <h2 class="section-title">Featured Properties</h2>
+        <p class="section-subtitle">Exclusively curated luxury listings for discerning buyers</p>
+      </div>
+      <a href="#" class="view-all" style="color:rgba(255,255,255,0.7)">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-main" onclick="openModal(0)">
+        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=900&q=80" alt="Luxury Villa" />
+        <div class="featured-overlay"></div>
+        <div class="featured-info">
+          <div style="display:flex;gap:6px;margin-bottom:8px">
+            <span class="badge badge-sale">For Sale</span>
+            <span class="badge badge-featured">Featured</span>
+          </div>
+          <div class="featured-price">₹3.2 Crore</div>
+          <div class="featured-title">Luxe Sky Residences – 5BHK Penthouse</div>
+          <div class="featured-loc"><i class="fas fa-location-dot"></i> Hitech City, Hyderabad</div>
+        </div>
+      </div>
+      <div class="featured-side" onclick="openModal(2)">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&q=80" alt="Modern House" />
+        <div class="featured-overlay"></div>
+        <div class="featured-info">
+          <span class="badge badge-new">New</span>
+          <div class="featured-price" style="margin-top:8px">₹1.45 Cr</div>
+          <div class="featured-title">The Green Villa – 4BHK</div>
+          <div class="featured-loc"><i class="fas fa-location-dot"></i> Gachibowli</div>
+        </div>
+      </div>
+      <div class="featured-side" onclick="openModal(1)">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Modern Apartment" />
+        <div class="featured-overlay"></div>
+        <div class="featured-info">
+          <span class="badge badge-rent">For Rent</span>
+          <div class="featured-price" style="margin-top:8px">₹55,000/mo</div>
+          <div class="featured-title">Skyline Towers – 3BHK</div>
+          <div class="featured-loc"><i class="fas fa-location-dot"></i> Banjara Hills</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section how-section" id="how">
+  <div class="section-inner">
+    <div class="section-header" style="text-align:center">
+      <p class="section-label">Simple Process</p>
+      <h2 class="section-title">How EstateEdge Works</h2>
+      <p class="section-subtitle" style="max-width:540px;margin:0.75rem auto 0">Find, explore, and own your dream property in just four easy steps</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-icon"><i class="fas fa-magnifying-glass"></i><span class="step-num">1</span></div>
+        <h3 class="step-title">Search</h3>
+        <p class="step-desc">Use smart filters to find properties that match your budget, location, and lifestyle preferences.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon"><i class="fas fa-calendar-check"></i><span class="step-num">2</span></div>
+        <h3 class="step-title">Schedule Visit</h3>
+        <p class="step-desc">Book a free site visit or virtual tour at your convenience directly through the platform.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon"><i class="fas fa-comments"></i><span class="step-num">3</span></div>
+        <h3 class="step-title">Negotiate</h3>
+        <p class="step-desc">Connect with agents or owners, discuss pricing, and get expert guidance on the best deals.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-icon"><i class="fas fa-file-signature"></i><span class="step-num">4</span></div>
+        <h3 class="step-title">Close Deal</h3>
+        <p class="step-desc">Complete paperwork with legal assistance and move into your dream property stress-free.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AGENTS ===== -->
+<section class="section" id="agents" style="background:var(--white)">
+  <div class="section-inner">
+    <div class="section-header section-header-flex">
+      <div>
+        <p class="section-label">Our Team</p>
+        <h2 class="section-title">Top Agents</h2>
+        <p class="section-subtitle">Experienced professionals ready to guide you</p>
+      </div>
+      <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="agents-grid" id="agentsGrid"></div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="section testimonials-section" id="testimonials">
+  <div class="section-inner">
+    <div class="section-header" style="text-align:center">
+      <p class="section-label">Success Stories</p>
+      <h2 class="section-title">What Clients Say</h2>
+      <p class="section-subtitle" style="max-width:480px;margin:0.75rem auto 0">Real experiences from people who found their perfect home with us</p>
+    </div>
+    <div class="testimonials-grid" id="testimonialsGrid"></div>
+  </div>
+</section>
+
+<!-- ===== INQUIRY / CONTACT ===== -->
+<section class="section inquiry-section" id="contact">
+  <div class="section-inner">
+    <div class="inquiry-grid">
+      <div>
+        <p class="section-label inquiry-label">Get In Touch</p>
+        <h2 class="section-title inquiry-title">Ready to Find Your<br>Perfect Home?</h2>
+        <p class="section-subtitle inquiry-subtitle">Submit your requirements and our experts will call you within 24 hours with matching properties.</p>
+        <div class="inquiry-perks">
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-phone"></i></div>
+            <div class="perk-text"><h4>Free Consultation</h4><p>Get expert advice at zero cost, no strings attached</p></div>
+          </div>
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-shield-halved"></i></div>
+            <div class="perk-text"><h4>100% Verified Listings</h4><p>All properties are legally vetted by our team</p></div>
+          </div>
+          <div class="perk-item">
+            <div class="perk-icon"><i class="fas fa-clock"></i></div>
+            <div class="perk-text"><h4>Quick Response</h4><p>Our agents reply within 24 hours guaranteed</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="inquiry-form" id="inquiryFormWrap">
+        <h3 class="form-title">Send Us Your Requirement</h3>
+        <p class="form-subtitle">Fill in the details below and we'll get back to you shortly</p>
+        <form id="inquiryForm" onsubmit="submitForm(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input class="form-control" type="text" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input class="form-control" type="tel" placeholder="+91 XXXXX XXXXX" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input class="form-control" type="email" placeholder="your@email.com" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Looking For</label>
+              <select class="form-select">
+                <option>Buy a Property</option>
+                <option>Rent a Property</option>
+                <option>Sell/List Property</option>
+                <option>Investment Advice</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Budget Range</label>
+              <select class="form-select">
+                <option>Under ₹50 Lakh</option>
+                <option>₹50 L – ₹1 Cr</option>
+                <option>₹1 Cr – ₹2 Cr</option>
+                <option>₹2 Cr – ₹5 Cr</option>
+                <option>₹5 Cr+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Preferred Location</label>
+            <input class="form-control" type="text" placeholder="e.g. Gachibowli, Hyderabad" />
+          </div>
+          <div class="form-group">
+            <label>Additional Requirements</label>
+            <textarea class="form-control" placeholder="Bedrooms, amenities, possession timeline..."></textarea>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" id="agreeCheck" required />
+            <label for="agreeCheck">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
+          </div>
+          <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Submit Inquiry</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <i class="fas fa-circle-check"></i>
+          <h3>Inquiry Submitted!</h3>
+          <p>Thank you! Our team will contact you within 24 hours with tailored property recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo"><i class="fas fa-building" style="color:var(--accent);margin-right:4px"></i>Estate<span>Edge</span></div>
+      <p class="footer-desc">India's most trusted real estate platform connecting buyers, sellers, and renters since 2010. We make property search simple, transparent, and reliable.</p>
+      <div class="footer-socials">
+        <div class="footer-social"><i class="fab fa-facebook-f"></i></div>
+        <div class="footer-social"><i class="fab fa-instagram"></i></div>
+        <div class="footer-social"><i class="fab fa-twitter"></i></div>
+        <div class="footer-social"><i class="fab fa-linkedin-in"></i></div>
+        <div class="footer-social"><i class="fab fa-youtube"></i></div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <div class="footer-links">
+        <a href="#">Buy Property</a>
+        <a href="#">Rent Property</a>
+        <a href="#">Sell Property</a>
+        <a href="#">New Projects</a>
+        <a href="#">EMI Calculator</a>
+        <a href="#">Property Valuation</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">Our Agents</a>
+        <a href="#">Careers</a>
+        <a href="#">Press & Media</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Stay Updated</h4>
+      <p style="font-size:0.85rem;margin-bottom:1rem;line-height:1.6">Subscribe to get the latest listings, market trends, and expert tips in your inbox.</p>
+      <div class="footer-newsletter">
+        <input type="email" placeholder="Enter your email" />
+        <button onclick="showToast('Subscribed! 🎉 Welcome to EstateEdge.')"><i class="fas fa-bell"></i> Subscribe</button>
+      </div>
+      <p style="font-size:0.8rem;margin-top:1rem;display:flex;align-items:center;gap:6px"><i class="fas fa-phone" style="color:var(--accent)"></i> +91 1800-123-4567</p>
+      <p style="font-size:0.8rem;margin-top:0.5rem;display:flex;align-items:center;gap:6px"><i class="fas fa-envelope" style="color:var(--accent)"></i> hello@estateedge.in</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 EstateEdge. All rights reserved. Made with <i class="fas fa-heart" style="color:#ef4444"></i> in India</span>
+    <span>RERA Registered | ISO 9001 Certified</span>
+  </div>
+</footer>
+
+<!-- ===== PROPERTY MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <div class="modal-gallery">
+        <img id="modalImg" src="" alt="Property" />
+        <div class="modal-gallery-nav">
+          <button class="gallery-nav-btn" onclick="prevImg()"><i class="fas fa-chevron-left"></i></button>
+          <button class="gallery-nav-btn" onclick="nextImg()"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="gallery-counter" id="galleryCtr">1 / 3</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ===== BACK TO TOP & TOAST ===== -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-arrow-up"></i>
+</button>
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const properties = [
+  {
+    id: 1, type: "Apartment", status: "sale", badge: "sale", label: "For Sale",
+    price: "₹85 L", priceRaw: 8500000,
+    title: "Serene 3BHK in Prestige Heights",
+    location: "Gachibowli, Hyderabad",
+    beds: 3, baths: 2, area: "1,450", parking: "2",
+    agent: "Rahul Mehta", agentImg: "https://randomuser.me/api/portraits/men/32.jpg",
+    badges: ["sale"],
+    isNew: false, isFeatured: false,
+    images: [
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80",
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80"
+    ],
+    desc: "A beautifully designed 3BHK apartment in the prestigious Gachibowli IT corridor. Features modern interiors, premium fittings, and stunning city views. Ideal for families and working professionals.",
+    amenities: ["Swimming Pool","Gym","24/7 Security","Clubhouse","Children Play Area","Covered Parking","Power Backup","Visitor Parking"]
+  },
+  {
+    id: 2, type: "Villa", status: "rent", badge: "rent", label: "For Rent",
+    price: "₹42,000", priceRaw: 42000,
+    title: "Luxury 4BHK Independent Villa",
+    location: "Banjara Hills, Hyderabad",
+    beds: 4, baths: 3, area: "2,800", parking: "3",
+    agent: "Priya Sharma", agentImg: "https://randomuser.me/api/portraits/women/44.jpg",
+    badges: ["rent","new"],
+    isNew: true, isFeatured: false,
+    images: [
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80",
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80",
+      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&q=80"
+    ],
+    desc: "A stunning independent villa in the heart of Banjara Hills. Features a private garden, modular kitchen, home theatre, and an expansive terrace with panoramic views.",
+    amenities: ["Private Garden","Home Theatre","Terrace","Modular Kitchen","Servants Room","CCTV","Solar Panels","EV Charging"]
+  },
+  {
+    id: 3, type: "Apartment", status: "sale", badge: "sale", label: "For Sale",
+    price: "₹1.2 Cr", priceRaw: 12000000,
+    title: "Premium 2BHK Studio Apartment",
+    location: "Jubilee Hills, Hyderabad",
+    beds: 2, baths: 2, area: "1,100", parking: "1",
+    agent: "Arjun Nair", agentImg: "https://randomuser.me/api/portraits/men/51.jpg",
+    badges: ["sale","featured"],
+    isNew: false, isFeatured: true,
+    images: [
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80",
+      "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=800&q=80"
+    ],
+    desc: "A sleek, modern apartment in Jubilee Hills with premium Italian marble flooring, designer bathrooms, and state-of-the-art smart home features. Close to schools, hospitals, and malls.",
+    amenities: ["Smart Home","Rooftop Garden","Sky Lounge","Mini Golf","Concierge Service","Valet Parking","Infinity Pool","Yoga Deck"]
+  },
+  {
+    id: 4, type: "Plot", status: "sale", badge: "sale", label: "For Sale",
+    price: "₹62 L", priceRaw: 6200000,
+    title: "HMDA Approved Residential Plot",
+    location: "Kompally, Hyderabad",
+    beds: "–", baths: "–", area: "2,400", parking: "–",
+    agent: "Suresh Kumar", agentImg: "https://randomuser.me/api/portraits/men/62.jpg",
+    badges: ["sale","new"],
+    isNew: true, isFeatured: false,
+    images: [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80",
+      "https://images.unsplash.com/photo-1448630360428-65456885c650?w=800&q=80",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80"
+    ],
+    desc: "HMDA approved corner residential plot in a gated community layout. Surrounded by greenery with wide roads, underground drainage, and all civic amenities in place.",
+    amenities: ["HMDA Approved","Corner Plot","Gated Layout","Underground Drainage","Wide Roads","Street Lights","Park Nearby","Clear Title"]
+  },
+  {
+    id: 5, type: "Penthouse", status: "sale", badge: "sale", label: "For Sale",
+    price: "₹3.2 Cr", priceRaw: 32000000,
+    title: "Luxe Sky Residences – 5BHK Penthouse",
+    location: "Hitech City, Hyderabad",
+    beds: 5, baths: 5, area: "4,500", parking: "4",
+    agent: "Kavya Reddy", agentImg: "https://randomuser.me/api/portraits/women/29.jpg",
+    badges: ["sale","featured"],
+    isNew: false, isFeatured: true,
+    images: [
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=900&q=80",
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80"
+    ],
+    desc: "An ultra-luxurious penthouse offering 360-degree views of the city. Features a private heated pool, home automation, wine cellar, and a dedicated concierge. A true masterpiece of modern living.",
+    amenities: ["Private Pool","Wine Cellar","Home Automation","Concierge 24/7","Helipad Access","Private Elevator","Chef Kitchen","Panoramic Views"]
+  },
+  {
+    id: 6, type: "Apartment", status: "rent", badge: "rent", label: "For Rent",
+    price: "₹22,000", priceRaw: 22000,
+    title: "Cozy 2BHK in Rainbow Residency",
+    location: "Kukatpally, Hyderabad",
+    beds: 2, baths: 1, area: "950", parking: "1",
+    agent: "Vikram Rao", agentImg: "https://randomuser.me/api/portraits/men/77.jpg",
+    badges: ["rent"],
+    isNew: false, isFeatured: false,
+    images: [
+      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
+      "https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=800&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80"
+    ],
+    desc: "A well-maintained 2BHK apartment in a peaceful gated community. Semi-furnished with wardrobes and air conditioners. Excellent connectivity to metro and IT hubs.",
+    amenities: ["Semi-Furnished","Lift","Security","Metro Nearby","Kids Park","Generator","Community Hall","CCTV"]
+  }
+];
+
+const agents = [
+  { name: "Kavya Reddy", title: "Senior Property Advisor", deals: "124", rating: "4.9", img: "https://randomuser.me/api/portraits/women/29.jpg" },
+  { name: "Rahul Mehta", title: "Residential Expert", deals: "98", rating: "4.8", img: "https://randomuser.me/api/portraits/men/32.jpg" },
+  { name: "Priya Sharma", title: "Luxury Properties Specialist", deals: "76", rating: "4.9", img: "https://randomuser.me/api/portraits/women/44.jpg" },
+  { name: "Arjun Nair", title: "Investment Consultant", deals: "112", rating: "4.7", img: "https://randomuser.me/api/portraits/men/51.jpg" }
+];
+
+const testimonials = [
+  { name: "Sneha Patel", role: "Home Buyer, Hyderabad", stars: 5, img: "https://randomuser.me/api/portraits/women/68.jpg", text: "EstateEdge made my home buying journey incredibly smooth. The agent was super responsive and helped me find the perfect 3BHK within my budget. Highly recommend!" },
+  { name: "Aditya Verma", role: "Property Investor, Mumbai", stars: 5, img: "https://randomuser.me/api/portraits/men/85.jpg", text: "I've bought three properties through EstateEdge now. The verified listings give me complete peace of mind, and the pricing is always transparent with no hidden charges." },
+  { name: "Meera Krishnan", role: "Renter, Bangalore", stars: 4, img: "https://randomuser.me/api/portraits/women/12.jpg", text: "Found a gorgeous furnished apartment within two days of submitting my inquiry. The team was professional, quick, and the paperwork was hassle-free. Wonderful experience!" }
+];
+
+// ===== RENDER PROPERTIES =====
+function renderProperties(list) {
+  const grid = document.getElementById('propertiesGrid');
+  grid.innerHTML = list.map((p, i) => `
+    <div class="prop-card" onclick="openModal(${properties.indexOf(p)})">
+      <div class="prop-img">
+        <img src="${p.images[0]}" alt="${p.title}" loading="lazy"/>
+        <div class="prop-badges">
+          ${p.badges.map(b => `<span class="badge badge-${b}">${b==='sale'?'For Sale':b==='rent'?'For Rent':b==='new'?'New':'Featured'}</span>`).join('')}
+        </div>
+        <button class="prop-wishlist" onclick="toggleWishlist(event, this)" title="Save"><i class="far fa-heart"></i></button>
+        <div class="prop-gallery-dots">
+          ${p.images.map((_,di) => `<div class="gallery-dot ${di===0?'active':''}"></div>`).join('')}
+        </div>
+      </div>
+      <div class="prop-body">
+        <div class="prop-price">${p.price}${p.status==='rent'?'<sub>/month</sub>':''}</div>
+        <div class="prop-title">${p.title}</div>
+        <div class="prop-location"><i class="fas fa-location-dot"></i>${p.location}</div>
+        <div class="prop-features">
+          <div class="prop-feat"><i class="fas fa-bed"></i>${p.beds !== '–' ? p.beds+' Beds' : 'Plot'}</div>
+          <div class="prop-feat"><i class="fas fa-bath"></i>${p.baths !== '–' ? p.baths+' Baths' : '–'}</div>
+          <div class="prop-feat"><i class="fas fa-vector-square"></i>${p.area} sqft</div>
+          ${p.parking !== '–' ? `<div class="prop-feat"><i class="fas fa-car"></i>${p.parking} Park</div>` : ''}
+        </div>
+        <div class="prop-footer">
+          <div class="agent-mini">
+            <div class="agent-mini-img"><img src="${p.agentImg}" alt="${p.agent}"/></div>
+            <div class="agent-mini-name">${p.agent}</div>
+          </div>
+          <button class="prop-cta"><i class="fas fa-phone"></i> Enquire</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== RENDER AGENTS =====
+function renderAgents() {
+  document.getElementById('agentsGrid').innerHTML = agents.map(a => `
+    <div class="agent-card">
+      <div class="agent-img"><img src="${a.img}" alt="${a.name}"/></div>
+      <div class="agent-name">${a.name}</div>
+      <div class="agent-title">${a.title}</div>
+      <div class="agent-stats">
+        <div><div class="agent-stat-val">${a.deals}</div><div class="agent-stat-lbl">Deals</div></div>
+        <div><div class="agent-stat-val">${a.rating}★</div><div class="agent-stat-lbl">Rating</div></div>
+      </div>
+      <div class="agent-socials">
+        <div class="agent-social"><i class="fab fa-linkedin-in"></i></div>
+        <div class="agent-social"><i class="fas fa-phone"></i></div>
+        <div class="agent-social"><i class="fas fa-envelope"></i></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== RENDER TESTIMONIALS =====
+function renderTestimonials() {
+  document.getElementById('testimonialsGrid').innerHTML = testimonials.map(t => `
+    <div class="testimonial-card">
+      <div class="testimonial-stars">${'★'.repeat(t.stars)}${'☆'.repeat(5-t.stars)}</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">${t.text}</p>
+      <div class="testimonial-author">
+        <div class="testimonial-author-img"><img src="${t.img}" alt="${t.name}"/></div>
+        <div>
+          <div class="testimonial-name">${t.name}</div>
+          <div class="testimonial-role">${t.role}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== MODAL =====
+let currentPropIdx = 0, currentImgIdx = 0;
+
+function openModal(propIdx) {
+  currentPropIdx = propIdx; currentImgIdx = 0;
+  const p = properties[propIdx];
+  updateModalImg();
+  document.getElementById('galleryCtr').textContent = `1 / ${p.images.length}`;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-price-row">
+      <div class="modal-price">${p.price}${p.status==='rent'?'<span style="font-size:1rem;font-weight:400;color:var(--text-light)">/month</span>':''}</div>
+      <div class="modal-badges">${p.badges.map(b=>`<span class="badge badge-${b}">${b==='sale'?'For Sale':b==='rent'?'For Rent':b==='new'?'New':'Featured'}</span>`).join('')}</div>
+    </div>
+    <div class="modal-title">${p.title}</div>
+    <div class="modal-loc"><i class="fas fa-location-dot" style="color:var(--accent)"></i> ${p.location}</div>
+    <div class="modal-features">
+      ${p.beds!=='–'?`<div class="modal-feat"><div class="modal-feat-icon"><i class="fas fa-bed"></i></div><div class="modal-feat-val">${p.beds}</div><div class="modal-feat-lbl">Bedrooms</div></div>`:''}
+      ${p.baths!=='–'?`<div class="modal-feat"><div class="modal-feat-icon"><i class="fas fa-bath"></i></div><div class="modal-feat-val">${p.baths}</div><div class="modal-feat-lbl">Bathrooms</div></div>`:''}
+      <div class="modal-feat"><div class="modal-feat-icon"><i class="fas fa-vector-square"></i></div><div class="modal-feat-val">${p.area}</div><div class="modal-feat-lbl">Sqft</div></div>
+      ${p.parking!=='–'?`<div class="modal-feat"><div class="modal-feat-icon"><i class="fas fa-car"></i></div><div class="modal-feat-val">${p.parking}</div><div class="modal-feat-lbl">Parking</div></div>`:''}
+    </div>
+    <p class="modal-desc">${p.desc}</p>
+    <div class="modal-amenities">
+      <h4>Amenities</h4>
+      <div class="amenities-grid">
+        ${p.amenities.map(a=>`<span class="amenity-tag"><i class="fas fa-check"></i>${a}</span>`).join('')}
+      </div>
+    </div>
+    <div class="modal-contact-row">
+      <button class="modal-btn modal-btn-primary" onclick="showToast('Agent notified! Expect a call within 2 hours.')"><i class="fas fa-phone"></i> Call Agent</button>
+      <button class="modal-btn modal-btn-outline" onclick="scrollToContact()"><i class="fas fa-envelope"></i> Send Inquiry</button>
+      <button class="modal-btn modal-btn-accent" onclick="showToast('Tour scheduled! Check your email for confirmation.')"><i class="fas fa-calendar-check"></i> Book Visit</button>
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateModalImg() {
+  const p = properties[currentPropIdx];
+  document.getElementById('modalImg').src = p.images[currentImgIdx];
+  document.getElementById('galleryCtr').textContent = `${currentImgIdx+1} / ${p.images.length}`;
+}
+
+function nextImg() {
+  const p = properties[currentPropIdx];
+  currentImgIdx = (currentImgIdx + 1) % p.images.length;
+  updateModalImg();
+}
+
+function prevImg() {
+  const p = properties[currentPropIdx];
+  currentImgIdx = (currentImgIdx - 1 + p.images.length) % p.images.length;
+  updateModalImg();
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function scrollToContact() {
+  closeModal();
+  setTimeout(() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }), 100);
+}
+
+// ===== SEARCH =====
+let activeTab = 'buy';
+function setTab(el, tab) {
+  document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  activeTab = tab;
+}
+
+function doSearch() {
+  const loc = document.getElementById('searchLocation').value.toLowerCase();
+  const type = document.getElementById('searchType').value;
+  const budget = document.getElementById('searchBudget').value;
+  const beds = document.getElementById('searchBeds').value;
+  let filtered = properties;
+  if (loc) filtered = filtered.filter(p => p.location.toLowerCase().includes(loc) || p.title.toLowerCase().includes(loc));
+  if (type) filtered = filtered.filter(p => p.type === type);
+  if (beds) filtered = filtered.filter(p => String(p.beds) === beds || (beds==='5' && p.beds>=5));
+  if (budget) {
+    const [min,max] = budget.replace('+','').split('-').map(Number);
+    filtered = filtered.filter(p => {
+      if (budget.endsWith('+')) return p.priceRaw >= 50000000;
+      return p.priceRaw >= (min||0) && p.priceRaw <= (max||Infinity);
+    });
+  }
+  renderProperties(filtered.length > 0 ? filtered : properties);
+  document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
+  if (filtered.length === 0) showToast('No exact matches found. Showing all properties.');
+  else showToast(`Found ${filtered.length} propert${filtered.length===1?'y':'ies'} matching your criteria`);
+}
+
+let activeFilters = [];
+function quickFilter(el, filter) {
+  el.classList.toggle('active');
+  if (activeFilters.includes(filter)) activeFilters = activeFilters.filter(f=>f!==filter);
+  else activeFilters.push(filter);
+  showToast(`Filter "${filter}" ${el.classList.contains('active') ? 'applied' : 'removed'}`);
+}
+
+// ===== WISHLIST =====
+function toggleWishlist(e, btn) {
+  e.stopPropagation();
+  btn.classList.toggle('liked');
+  const liked = btn.classList.contains('liked');
+  btn.innerHTML = `<i class="${liked?'fas':'far'} fa-heart"></i>`;
+  showToast(liked ? '❤️ Added to your wishlist' : 'Removed from wishlist');
+}
+
+// ===== FORM =====
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('inquiryForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// ===== NAVBAR SCROLL =====
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ===== MOBILE MENU =====
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ===== INIT =====
+renderProperties(properties);
+renderAgents();
+renderTestimonials();
+</script>
+</body>
+</html>

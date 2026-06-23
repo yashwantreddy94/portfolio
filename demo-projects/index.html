@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Demo Projects — B Yashwant Reddy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --bg: #f7f6f2;
+      --surface: #f9f8f5;
+      --card-bg: #fbfbf9;
+      --border: #d4d1ca;
+      --divider: #dcd9d5;
+      --accent: #01696f;
+      --accent-hover: #0c4e54;
+      --accent-light: #dce9e6;
+      --text: #28251d;
+      --muted: #6f6d68;
+      --muted2: #9b9892;
+      --radius: 18px;
+      --shadow: 0 1px 2px rgba(25,24,21,0.06);
+      --shadow-hover: 0 10px 30px rgba(25,24,21,0.09);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .topnav {
+      background: rgba(40, 37, 29, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topnav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #01696f, #0c4e54);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      color: #f9f8f4;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .logo-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+
+    .logo-tag {
+      font-size: 10px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .topnav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topnav-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: color 0.2s;
+    }
+
+    .topnav-link:hover {
+      color: #fff;
+    }
+
+    .topnav-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4f98a3;
+      box-shadow: 0 0 6px #4f98a3;
+    }
+
+    header {
+      background: linear-gradient(135deg, #28251d 0%, #1f433f 45%, #01696f 100%);
+      padding: 56px 32px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='40' cy='40' r='1.5' fill='%23ffffff' fill-opacity='0.06'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--bg);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-company {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.62);
+      margin-bottom: 10px;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    header h1 {
+      font-size: clamp(28px, 5vw, 54px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1.5px;
+      margin-bottom: 14px;
+      line-height: 1.1;
+    }
+
+    header p {
+      color: rgba(255,255,255,0.78);
+      font-size: 15px;
+      max-width: 620px;
+      margin: 0 auto 36px;
+      line-height: 1.75;
+    }
+
+    .header-stats {
+      display: inline-flex;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .stat {
+      padding: 14px 28px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+    }
+
+    .quote-banner {
+      max-width: 1240px;
+      margin: 36px auto 0;
+      padding: 0 24px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .quote-inner {
+      background: linear-gradient(135deg, #28251d, #1f433f);
+      border-radius: 16px;
+      border: 1px solid rgba(1,105,111,0.22);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 4px 24px rgba(25,24,21,0.14);
+      min-height: 72px;
+    }
+
+    .quote-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      background: rgba(1,105,111,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #9fd0cb;
+    }
+
+    .quote-text-wrap {
+      flex: 1;
+    }
+
+    .quote-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e7f2f0;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .quote-author {
+      font-size: 11px;
+      color: rgba(184,224,219,0.72);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .quote-nav {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .quote-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.72);
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s;
+    }
+
+    .quote-btn:hover {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+
+    .toolbar {
+      max-width: 1240px;
+      margin: 20px auto 0;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .toolbar-inner {
+      background: var(--surface);
+      border-radius: 16px;
+      box-shadow: var(--shadow-hover);
+      padding: 14px 18px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 1px solid rgba(40,37,29,0.08);
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-wrap i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted2);
+      font-size: 13px;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 9px 13px 9px 38px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 13.5px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    #searchInput:focus {
+      border-color: var(--accent);
+      background: var(--surface);
+    }
+
+    #searchInput::placeholder {
+      color: var(--muted2);
+    }
+
+    .divider {
+      width: 1px;
+      height: 30px;
+      background: var(--divider);
+      flex-shrink: 0;
+    }
+
+    .filter-btns {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #f9f8f4;
+    }
+
+    .filter-btn:hover:not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .section-meta {
+      max-width: 1240px;
+      margin: 24px auto 14px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .showing-count {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .showing-count span {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .grid {
+      max-width: 1240px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(1,105,111,0.28);
+    }
+
+    .card-strip { height: 5px; }
+
+    .strip-ecommerce,
+    .strip-hospitality,
+    .strip-services,
+    .strip-enterprise {
+      background: linear-gradient(90deg, #01696f, #4f98a3);
+    }
+
+    .card-header {
+      padding: 18px 18px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .icon-wrap {
+      width: 50px;
+      height: 50px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .icon-ecommerce,
+    .icon-hospitality,
+    .icon-services,
+    .icon-enterprise {
+      background: var(--accent-light);
+    }
+
+    .badge-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      margin-top: 3px;
+    }
+
+    .hot,
+    .popular,
+    .new,
+    .ticket {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .card-body {
+      padding: 12px 18px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .card-cat {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .cat-ecommerce,
+    .cat-hospitality,
+    .cat-services,
+    .cat-enterprise {
+      color: var(--accent);
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-top: 2px;
+      flex: 1;
+    }
+
+    .pitch-section {
+      margin-top: 10px;
+    }
+
+    .pitch-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 5px;
+    }
+
+    .pitch-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .pitch-tag {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-weight: 500;
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .card-footer {
+      padding: 12px 18px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-demo {
+      flex: 1;
+      padding: 10px 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #f9f8f4;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-decoration: none;
+      transition: background 0.18s, transform 0.14s;
+    }
+
+    .btn-demo:hover {
+      background: var(--accent-hover);
+      transform: scale(0.985);
+    }
+
+    .btn-demo.no-link {
+      background: var(--bg);
+      color: var(--muted2);
+      border: 1.5px dashed var(--border);
+      cursor: default;
+      font-weight: 600;
+    }
+
+    .btn-copy {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s;
+    }
+
+    .btn-copy:hover {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--muted);
+    }
+
+    .empty-state i {
+      font-size: 44px;
+      color: var(--muted2);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #28251d;
+      color: #f9f8f4;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), opacity 0.3s;
+      opacity: 0;
+      z-index: 9999;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted2);
+      font-size: 12.5px;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    footer a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 700px) {
+      .topnav { padding: 0 16px; }
+      .topnav-right .topnav-link:first-of-type { display: none; }
+      header { padding: 40px 16px 72px; }
+      .header-stats .stat { padding: 12px 18px; }
+      .quote-inner { flex-wrap: wrap; }
+      .quote-nav { width: 100%; justify-content: flex-end; }
+      .grid { grid-template-columns: 1fr; padding: 0 12px; gap: 14px; }
+      .toolbar-inner { flex-direction: column; align-items: stretch; }
+      .divider { display: none; }
+      .filter-btns { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="topnav-logo" href="../index.html">
+    <div class="logo-icon">BYR</div>
+    <div class="logo-text">
+      <span class="logo-name">B Yashwant Reddy</span>
+      <span class="logo-tag">Demo Projects</span>
+    </div>
+  </a>
+  <div class="topnav-right">
+    <div class="topnav-dot"></div>
+    <span class="topnav-link" style="color:rgba(255,255,255,0.75)">Live Showcase</span>
+    <a class="topnav-link" href="../index.html">Back to Portfolio</a>
+  </div>
+</nav>
+
+<header>
+  <div class="header-inner">
+    <div class="header-company">B Yashwant Reddy</div>
+    <div class="header-badge"><i class="fa-solid fa-layer-group"></i> Project Showcase</div>
+    <h1>Demo Projects</h1>
+    <p>A curated collection of web applications, dashboards, and business website demos showcasing my work in full-stack development, UI implementation, and product delivery.</p>
+    <div class="header-stats">
+      <div class="stat"><div class="stat-num" id="totalCount">13</div><div class="stat-label">Projects</div></div>
+      <div class="stat"><div class="stat-num">4</div><div class="stat-label">Categories</div></div>
+      <div class="stat"><div class="stat-num" style="color:#9fd0cb">Live</div><div class="stat-label">Hosted</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="quote-banner">
+  <div class="quote-inner">
+    <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
+    <div class="quote-text-wrap">
+      <div class="quote-text" id="quoteText">"Building useful software means solving real problems with clean execution."</div>
+      <div class="quote-author" id="quoteAuthor">— B Yashwant Reddy</div>
+    </div>
+    <div class="quote-nav">
+      <button class="quote-btn" onclick="prevQuote()" title="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="quote-btn" onclick="nextQuote()" title="Next"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="search-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search by project name, category, or use case..." oninput="filterCards()" />
+    </div>
+    <div class="divider"></div>
+    <div class="filter-btns">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('ecommerce',this)">🛒 E-Commerce</button>
+      <button class="filter-btn" onclick="setFilter('hospitality',this)">🏨 Hospitality</button>
+      <button class="filter-btn" onclick="setFilter('services',this)">💼 Services</button>
+      <button class="filter-btn" onclick="setFilter('enterprise',this)">📊 Enterprise</button>
+    </div>
+  </div>
+</div>
+
+<div class="section-meta">
+  <div class="showing-count">Showing <span id="countLabel">13</span> projects</div>
+</div>
+
+<div class="grid" id="cardGrid"></div>
+
+<div id="toast">
+  <i class="fa-solid fa-circle-check" style="color:#68a9b2;font-size:15px"></i>
+  <span id="toastMsg">Link copied!</span>
+</div>
+
+<footer>
+  <div>Project showcase by <a href="../index.html">B Yashwant Reddy</a></div>
+  <div style="color:#9b9892">Focused on web development, business applications, and digital product delivery.</div>
+</footer>
+
+<script>
+const quotes = [
+  { text: "Building useful software means solving real problems with clean execution.", author: "B Yashwant Reddy" },
+  { text: "Good products combine usability, performance, and business value.", author: "Portfolio Note" },
+  { text: "Every project is a chance to improve systems, workflows, and user experience.", author: "B Yashwant Reddy" },
+  { text: "Clean interfaces and reliable functionality create lasting impact.", author: "Portfolio Note" }
+];
+
+let qIdx = Math.floor(Math.random() * quotes.length);
+
+function showQuote(i) {
+  const q = quotes[i];
+  document.getElementById('quoteText').textContent = `"${q.text}"`;
+  document.getElementById('quoteAuthor').textContent = `— ${q.author}`;
+}
+
+function nextQuote() {
+  qIdx = (qIdx + 1) % quotes.length;
+  showQuote(qIdx);
+}
+
+function prevQuote() {
+  qIdx = (qIdx - 1 + quotes.length) % quotes.length;
+  showQuote(qIdx);
+}
+
+showQuote(qIdx);
+setInterval(nextQuote, 8000);
+
+const demos = [
+  {
+    icon:"🛒",
+    title:"E-Commerce Store",
+    category:"ecommerce",
+    badge:"hot",
+    badgeLabel:"Featured",
+    desc:"A complete online store experience with product listing, cart flow, checkout, and order journey presentation.",
+    pitch:["Retail Brands","Local Shops","Online Sellers"],
+    link:"./ECommerceStoreWebsite/"
+  },
+  {
+    icon:"🛒",
+    title:"E-Commerce Dashboard",
+    category:"ecommerce",
+    badge:"hot",
+    badgeLabel:"Featured",
+    desc:"An admin-side dashboard for managing products, orders, and sales activity in an e-commerce workflow.",
+    pitch:["Store Owners","Operations Teams","Retail Businesses"],
+    link:"./ECommerceStoreWebsite/admin.html"
+  },
+  {
+    icon:"✈️",
+    title:"Travel & Tourism Website",
+    category:"hospitality",
+    badge:"popular",
+    badgeLabel:"Popular",
+    desc:"A travel showcase with destination listings, package highlights, booking forms, and visual-first presentation.",
+    pitch:["Travel Agencies","Tour Operators","Hospitality Brands"],
+    link:"./Travel&TourismWebsite/"
+  },
+  {
+    icon:"✈️",
+    title:"SafarEasy Website",
+    category:"hospitality",
+    badge:"popular",
+    badgeLabel:"Popular",
+    desc:"A branded tourism platform focused on travel packages, inquiry flow, and destination discovery.",
+    pitch:["Travel Agencies","Tour Businesses","Booking Platforms"],
+    link:"./Travel&TourismWebsite/SafarEasy/"
+  },
+  {
+    icon:"🏨",
+    title:"Hotel / Restaurant Booking",
+    category:"hospitality",
+    badge:"popular",
+    badgeLabel:"Popular",
+    desc:"A booking-oriented hospitality website with service presentation, availability flow, and customer inquiries.",
+    pitch:["Hotels","Restaurants","Resorts"],
+    link:"./HotelRestaurantWebsite/"
+  },
+  {
+    icon:"💼",
+    title:"Business Portfolio / Agency",
+    category:"services",
+    badge:null,
+    badgeLabel:null,
+    desc:"A modern business website with services, team introduction, testimonials, and contact-driven structure.",
+    pitch:["Consultants","Agencies","Professional Services"],
+    link:"./BusinessAgencyPortfolioWebsite/"
+  },
+  {
+    icon:"🏥",
+    title:"Healthcare / Clinic Website",
+    category:"services",
+    badge:"hot",
+    badgeLabel:"Featured",
+    desc:"A healthcare-focused site with doctor profiles, departments, appointments, and service-focused information architecture.",
+    pitch:["Clinics","Hospitals","Diagnostic Centers"],
+    link:"./HealthcareClinicWebsite/"
+  },
+  {
+    icon:"🎓",
+    title:"Education / Course Platform",
+    category:"services",
+    badge:"popular",
+    badgeLabel:"Popular",
+    desc:"A course and training platform with program listings, enrollment flow, and profile-based content sections.",
+    pitch:["Institutes","Schools","Training Platforms"],
+    link:"./EducationOnlineCourseWebsite/"
+  },
+  {
+    icon:"🎓",
+    title:"Education Platform Dashboard",
+    category:"services",
+    badge:"popular",
+    badgeLabel:"Popular",
+    desc:"A dashboard interface for course management, progress tracking, and student-teacher workflow visibility.",
+    pitch:["Ed-Tech Teams","Institutes","Learning Platforms"],
+    link:"./EducationOnlineCourseWebsite/dashboard.html"
+  },
+  {
+    icon:"🏗️",
+    title:"Real Estate Listing Site",
+    category:"services",
+    badge:"hot",
+    badgeLabel:"Featured",
+    desc:"A property listing interface with search filters, image galleries, and lead generation touchpoints.",
+    pitch:["Realtors","Builders","Property Firms"],
+    link:"./RealEstateListingWebsite/"
+  },
+  {
+    icon:"🍽️",
+    title:"Food Delivery / Menu Site",
+    category:"hospitality",
+    badge:"popular",
+    badgeLabel:"Popular",
+    desc:"A menu-driven restaurant website with category layout, product visibility, pricing, and order intent actions.",
+    pitch:["Restaurants","Cafes","Cloud Kitchens"],
+    link:"./FoodDeliveryRestaurantMenuWebsite/"
+  },
+  {
+    icon:"📊",
+    title:"Business CRM / Dashboard",
+    category:"enterprise",
+    badge:"ticket",
+    badgeLabel:"Enterprise",
+    desc:"A business dashboard concept for customer records, reporting, invoices, and management-focused workflows.",
+    pitch:["SMBs","Growing Teams","Operational Businesses"],
+    link:"./BusinessCRMWebsite/"
+  },
+  {
+    icon:"💇",
+    title:"Salon / Spa / Beauty Site",
+    category:"services",
+    badge:null,
+    badgeLabel:null,
+    desc:"A service business site with appointments, service menus, profile sections, and image-first presentation.",
+    pitch:["Salons","Spas","Beauty Studios"],
+    link:"./SalonSpaBeautyServicesWebsite/"
+  }
+];
+
+let activeFilter = 'all';
+
+function renderCards(list) {
+  const grid = document.getElementById('cardGrid');
+  document.getElementById('countLabel').textContent = list.length;
+  document.getElementById('totalCount').textContent = demos.length;
+
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-binoculars"></i><p>No projects match your search.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(d => `
+    <div class="card">
+      <div class="card-strip strip-${d.category}"></div>
+      <div class="card-header">
+        <div class="icon-wrap icon-${d.category}">${d.icon}</div>
+        ${d.badge ? `<span class="badge-tag ${d.badge}">${d.badgeLabel}</span>` : '<span></span>'}
+      </div>
+      <div class="card-body">
+        <div class="card-cat cat-${d.category}">${d.category.charAt(0).toUpperCase()+d.category.slice(1)}</div>
+        <div class="card-title">${d.title}</div>
+        <div class="card-desc">${d.desc}</div>
+        <div class="pitch-section">
+          <div class="pitch-label">Best For</div>
+          <div class="pitch-tags">${d.pitch.map(p=>`<span class="pitch-tag">${p}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="${d.link}" target="_blank" rel="noopener noreferrer" class="btn-demo${d.link==='#'?' no-link':''}">
+          ${d.link==='#'
+            ? '<i class="fa-solid fa-link-slash"></i> Add Project Link'
+            : '<i class="fa-solid fa-arrow-up-right-from-square"></i> Open Project'}
+        </a>
+        
+      </div>
+    </div>
+  `).join('');
+}
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterCards();
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const list = demos.filter(d => {
+    const inCat = activeFilter === 'all' || d.category === activeFilter;
+    const inQ = !q || [d.title, d.desc, ...d.pitch].join(' ').toLowerCase().includes(q);
+    return inCat && inQ;
+  });
+  renderCards(list);
+}
+
+function copyLink(link) {
+  navigator.clipboard.writeText(link).then(() => showToast('Project link copied!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+renderCards(demos);
+</script>
+</body>
+</html>
