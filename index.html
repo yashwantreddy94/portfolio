@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>B Yashwant Reddy | Portfolio</title>
-  <meta name="description" content="Portfolio of B Yashwant Reddy, a full-stack software developer and CTO focused on scalable applications, web development, and technology leadership." />
+  <meta name="description" content="Portfolio of B Yashwant Reddy, a full-stack software developer and CTO focused on scalable applications, e-commerce systems, digital products, and technology leadership." />
   <meta property="og:title" content="B Yashwant Reddy | Portfolio" />
-  <meta property="og:description" content="Full-stack software developer and CTO building scalable applications and digital products." />
+  <meta property="og:description" content="Full-stack software developer and CTO building scalable business applications, e-commerce systems, and digital products." />
   <meta property="og:type" content="website" />
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&f[]=zodiak@400,700&display=swap" rel="stylesheet">
   <style>
@@ -80,18 +80,6 @@
     button { font: inherit; border: 0; background: none; cursor: pointer; }
     :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
 
-    .skip-link {
-      position: absolute;
-      left: var(--space-4);
-      top: -3rem;
-      background: var(--color-primary);
-      color: var(--color-text-inverse);
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-md);
-      z-index: 100;
-    }
-
-    .skip-link:focus { top: var(--space-4); }
     .container { width: min(calc(100% - 2rem), var(--content)); margin-inline: auto; }
 
     .site-header {
@@ -173,19 +161,14 @@
       background: var(--color-surface-2);
     }
 
-    .menu-toggle {
-      display: none;
-    }
-
-    .mobile-menu {
-      display: none;
-    }
+    .menu-toggle { display: none; }
+    .mobile-menu { display: none; }
 
     main { padding-block: var(--space-10) var(--space-20); }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: var(--space-8);
       align-items: end;
       padding-block: clamp(var(--space-12), 10vw, var(--space-24));
@@ -212,8 +195,8 @@
     }
 
     h1 {
-      font-size: var(--text-3xl);
-      max-width: 11ch;
+      font-size: var(--text-2xl);
+      max-width: 10.5ch;
       margin-top: var(--space-5);
     }
 
@@ -255,7 +238,7 @@
       color: var(--color-text);
     }
 
-    .hero-card, .panel, .timeline-item, .project-card, .skill-card {
+    .hero-card, .panel, .timeline-item, .project-card, .skill-card, .service-card {
       background: color-mix(in srgb, var(--color-surface) 92%, transparent);
       border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
       box-shadow: var(--shadow-sm);
@@ -266,7 +249,7 @@
       padding: var(--space-6);
       position: relative;
       overflow: hidden;
-      min-height: 27rem;
+      min-height: 28rem;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -311,11 +294,19 @@
       margin-bottom: var(--space-8);
     }
 
+    .section-label {
+      color: var(--color-primary);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+
     .section-head h2 { font-size: var(--text-2xl); }
 
     .section-head p {
       color: var(--color-text-muted);
-      max-width: 60ch;
+      max-width: 62ch;
     }
 
     .grid-2 {
@@ -353,18 +344,34 @@
       font-size: var(--text-sm);
     }
 
-    .skills-grid, .projects-grid {
+    .services-grid,
+    .skills-grid,
+    .projects-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
       gap: var(--space-5);
     }
 
-    .skill-card, .project-card {
+    .service-card,
+    .skill-card,
+    .project-card {
       border-radius: 1.25rem;
       padding: var(--space-5);
     }
 
-    .skill-card h3, .project-card h3, .timeline-item h3 {
+    .service-index {
+      color: var(--color-primary);
+      font-size: var(--text-xs);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-3);
+    }
+
+    .service-card h3,
+    .skill-card h3,
+    .project-card h3,
+    .timeline-item h3 {
       font-family: var(--font-body);
       font-size: var(--text-lg);
       line-height: 1.25;
@@ -399,7 +406,11 @@
       position: relative;
     }
 
-    .timeline-item p, .project-card p, .skill-card p, .panel p {
+    .timeline-item p,
+    .project-card p,
+    .skill-card p,
+    .panel p,
+    .service-card p {
       color: var(--color-text-muted);
     }
 
@@ -412,13 +423,164 @@
       margin-bottom: var(--space-3);
     }
 
-    .timeline-item ul, .project-card ul {
+    .timeline-item ul,
+    .project-card ul {
       padding-left: 1.1rem;
       margin-top: var(--space-4);
       color: var(--color-text-muted);
     }
 
-    .timeline-item li, .project-card li { margin-bottom: var(--space-2); }
+    .timeline-item li,
+    .project-card li { margin-bottom: var(--space-2); }
+
+    .issues-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+
+    .issue-card {
+      border-radius: 1.25rem;
+      overflow: hidden;
+      background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .issue-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: color-mix(in srgb, var(--color-primary) 25%, var(--color-text) 10%);
+    }
+
+    .issue-thumb {
+      height: 12.5rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--color-surface-offset), var(--color-surface-2));
+    }
+
+    .issue-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .issue-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.38rem 0.75rem;
+      border-radius: var(--radius-full);
+      background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+      color: var(--color-primary);
+      font-size: var(--text-xs);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid color-mix(in srgb, var(--color-primary) 16%, transparent);
+      backdrop-filter: blur(8px);
+    }
+
+    .issue-body {
+      padding: var(--space-5);
+    }
+
+    .issue-body h3 {
+      font-family: var(--font-body);
+      font-size: var(--text-lg);
+      line-height: 1.25;
+      letter-spacing: 0;
+      margin-bottom: var(--space-3);
+    }
+
+    .issue-body p {
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .issue-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+
+    .issue-meta span {
+      padding: 0.42rem 0.7rem;
+      border-radius: 0.65rem;
+      background: color-mix(in srgb, var(--color-primary) 6%, var(--color-surface));
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      font-weight: 700;
+    }
+
+    .issue-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--color-primary);
+      font-size: var(--text-sm);
+      font-weight: 800;
+    }
+
+    .issue-link:hover {
+      color: var(--color-primary-hover);
+    }
+
+    @media (max-width: 900px) {
+      .issues-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .issue-answer {
+      margin-top: var(--space-4);
+      border-top: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+      padding-top: var(--space-4);
+    }
+
+    .issue-answer summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: var(--text-sm);
+      font-weight: 800;
+      color: var(--color-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .issue-answer summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .issue-answer summary::after {
+      content: "+";
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .issue-answer[open] summary::after {
+      content: "−";
+    }
+
+    .issue-answer-content {
+      margin-top: var(--space-4);
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .issue-answer-content p,
+    .issue-answer-content li {
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+
+    .issue-answer-content ul {
+      padding-left: 1.1rem;
+    }
 
     .contact-card {
       display: grid;
@@ -463,26 +625,19 @@
     }
 
     @media (max-width: 900px) {
-      .hero, .grid-2, .contact-card, .projects-grid, .skills-grid {
+      .hero, .grid-2, .contact-card, .projects-grid, .skills-grid, .services-grid {
         grid-template-columns: 1fr;
       }
 
-      .nav-links {
-        display: none;
-      }
-
-      .menu-toggle {
-        display: grid;
-      }
+      .nav-links { display: none; }
+      .menu-toggle { display: grid; }
 
       .mobile-menu {
         display: none;
         padding: 0 0 var(--space-4);
       }
 
-      .mobile-menu.open {
-        display: block;
-      }
+      .mobile-menu.open { display: block; }
 
       .mobile-menu-inner {
         display: grid;
@@ -508,7 +663,7 @@
         color: var(--color-primary);
       }
 
-      h1 { max-width: 13ch; }
+      h1 { max-width: 12ch; }
       .hero-card { min-height: 20rem; }
       .contact-card { padding: var(--space-6); }
     }
@@ -551,8 +706,8 @@
 
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="#about">About</a>
+        <a href="#services">Services</a>
         <a href="#experience">Experience</a>
-        <a href="#demo-projects">Sample Projects</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -575,8 +730,8 @@
     <div class="container mobile-menu" id="mobile-menu">
       <nav class="mobile-menu-inner" aria-label="Mobile navigation">
         <a href="#about">About</a>
+        <a href="#services">Services</a>
         <a href="#experience">Experience</a>
-        <a href="#demo-projects">Sample Projects</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -587,10 +742,10 @@
     <div class="container">
       <section class="hero" id="home">
         <div class="reveal visible">
-          <span class="eyebrow">Full-stack developer · CTO</span>
-          <h1>Building scalable software with product and delivery focus.</h1>
+          <span class="eyebrow">Full-stack developer · CTO · Product builder</span>
+          <h1>I build scalable web products, e-commerce systems, and business software.</h1>
           <p>
-            I am B Yashwant Reddy, an experienced software professional with a background in full-stack development, IT management, and technology leadership. I build web and mobile products, lead teams, and turn business requirements into reliable digital systems.
+            I’m B Yashwant Reddy, a software professional based in Guwahati, Assam, with experience across full-stack development, IT management, and technology leadership. I design and deliver digital systems that help teams operate better, scale faster, and serve users more effectively.
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="./assets/B-Yashwant-Reddy-CV-Resume.pdf" target="_blank" rel="noopener noreferrer">View CV</a>
@@ -605,20 +760,20 @@
           </div>
           <dl class="hero-meta">
             <div>
+              <dt>Current role</dt>
+              <dd>Chief Technology Officer</dd>
+            </div>
+            <div>
               <dt>Based in</dt>
               <dd>Guwahati, Assam, India</dd>
             </div>
             <div>
-              <dt>Current role</dt>
-              <dd>Chief Technology Officer at Zero9 Communication Pvt. Ltd.</dd>
+              <dt>Focus</dt>
+              <dd>Business systems, e-commerce platforms, and digital product delivery</dd>
             </div>
             <div>
-              <dt>Core stack</dt>
-              <dd>Java, JavaScript, HTML/CSS, Android, Databases</dd>
-            </div>
-            <div>
-              <dt>Languages</dt>
-              <dd>English, Hindi, Telugu, Assamese</dd>
+              <dt>Experience</dt>
+              <dd>Full-stack development, IT management, and team execution</dd>
             </div>
           </dl>
         </aside>
@@ -626,26 +781,29 @@
 
       <section id="about">
         <div class="section-head reveal">
-          <h2>About and strengths</h2>
+          <span class="section-label">About me</span>
+          <h2>Building software that is practical, scalable, and business-ready</h2>
           <p>
-            My work sits at the intersection of software engineering, delivery management, and product execution. I enjoy building systems that are practical for teams, scalable for growth, and clean for users.
+            I bring together engineering, product execution, and leadership experience to deliver systems that solve real operational problems. My background spans application development, team coordination, workflow planning, and technology strategy, which helps me contribute both hands-on and at a broader execution level.
           </p>
         </div>
+
         <div class="grid-2">
           <article class="panel reveal">
             <h3>Profile</h3>
             <p>
-              I have worked across development, technology leadership, and IT training, which gives me a broad view of how products are planned, built, deployed, and improved. That mix helps me contribute both hands-on in engineering and strategically in execution.
+              I’ve worked across development, IT training, and leadership roles, giving me a strong understanding of how products move from idea to execution. I enjoy building solutions that are useful for teams, efficient for businesses, and clear for end users.
             </p>
             <div class="stat-grid">
-              <div class="stat"><strong>5+</strong><span>Years across development, training, and leadership</span></div>
-              <div class="stat"><strong>2</strong><span>Major independent product builds listed in portfolio</span></div>
+              <div class="stat"><strong>5+</strong><span>Years across development, delivery, and leadership</span></div>
+              <div class="stat"><strong>2</strong><span>Independent product builds highlighted in portfolio</span></div>
               <div class="stat"><strong>MCA</strong><span>Assam Don Bosco University, 2018–2020</span></div>
               <div class="stat"><strong>BCA</strong><span>Assam Don Bosco University, 2015–2018</span></div>
             </div>
           </article>
+
           <article class="panel reveal">
-            <h3>Capabilities</h3>
+            <h3>Highlights</h3>
             <div class="chip-row">
               <span class="chip">Full-stack development</span>
               <span class="chip">Technology leadership</span>
@@ -654,41 +812,98 @@
               <span class="chip">Android development</span>
               <span class="chip">Database management</span>
               <span class="chip">IT operations</span>
-              <span class="chip">Team collaboration</span>
+              <span class="chip">Cross-functional collaboration</span>
             </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="section-head reveal">
+          <span class="section-label">What I do</span>
+          <h2>Services I bring to projects</h2>
+          <p>
+            My work covers development, business systems, and technical execution, with a focus on building reliable products that support real workflows and business goals.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card reveal">
+            <div class="service-index">01</div>
+            <h3>Web application development</h3>
+            <p>
+              I build responsive websites, business applications, dashboards, and workflow-driven systems with a focus on usability, maintainability, and reliable delivery.
+            </p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-index">02</div>
+            <h3>E-commerce systems</h3>
+            <p>
+              I develop storefronts, ordering platforms, inventory flows, and admin systems that support both customer experience and operational control.
+            </p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-index">03</div>
+            <h3>Business tools and admin panels</h3>
+            <p>
+              I create internal systems for management, reporting, customer operations, and service delivery, designed to make day-to-day work more efficient.
+            </p>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-index">04</div>
+            <h3>Technology leadership</h3>
+            <p>
+              In leadership roles, I guide execution, oversee delivery, align technical decisions with business needs, and support continuity across teams and systems.
+            </p>
           </article>
         </div>
       </section>
 
       <section id="experience">
         <div class="section-head reveal">
+          <span class="section-label">Work history</span>
           <h2>Experience</h2>
           <p>
-            I have moved from training and implementation work into product development and then into a CTO role, with continuing responsibility for execution, systems, and team alignment.
+            My path has moved from training and implementation into full-stack development and then into technology leadership, with a continued focus on building and improving practical digital systems.
           </p>
         </div>
+
         <div class="timeline">
           <article class="timeline-item reveal">
-            <div class="meta"><span>Dec 2022 - Present</span><span>Zero9 Communication Pvt. Ltd., Guwahati</span></div>
+            <div class="meta"><span>Dec 2022 – Present</span><span>Zero9 Communication Pvt. Ltd., Guwahati</span></div>
             <h3>Chief Technology Officer</h3>
+            <p>
+              Leading technology strategy, software execution, infrastructure oversight, and delivery planning to support business objectives and long-term growth.
+            </p>
             <ul>
               <li>Lead technology strategy, management, and execution to support company objectives.</li>
               <li>Oversee software development, IT infrastructure, and delivery processes.</li>
               <li>Facilitate cross-functional collaboration for business continuity and growth.</li>
             </ul>
           </article>
+
           <article class="timeline-item reveal">
-            <div class="meta"><span>Dec 2020 - Nov 2022</span><span>Zero9 Communication Pvt. Ltd., Guwahati</span></div>
+            <div class="meta"><span>Dec 2020 – Nov 2022</span><span>Zero9 Communication Pvt. Ltd., Guwahati</span></div>
             <h3>Full Stack Software Developer</h3>
+            <p>
+              Worked on application design, development, deployment, and iterative improvements while contributing to team delivery and product enhancement.
+            </p>
             <ul>
               <li>Designed, developed, and deployed applications.</li>
               <li>Collaborated with teams on agile project delivery and technology enhancements.</li>
               <li>Contributed to process improvements and system optimization.</li>
             </ul>
           </article>
+
           <article class="timeline-item reveal">
-            <div class="meta"><span>Jan 2020 - May 2020</span><span>DDU GKY, Gogamukh</span></div>
+            <div class="meta"><span>Jan 2020 – May 2020</span><span>DDU GKY, Gogamukh</span></div>
             <h3>IT Trainer</h3>
+            <p>
+              Delivered IT training programs and supported learners with technical instruction and applied software knowledge.
+            </p>
             <ul>
               <li>Delivered IT training programs to students.</li>
             </ul>
@@ -696,59 +911,25 @@
         </div>
       </section>
 
-      <section id="demo-projects">
-        <div class="section-head reveal">
-          <h2>Sample projects</h2>
-          <p>
-            Alongside my featured work, I maintain a live demo collection of business websites, dashboards, and web applications. These demos highlight my approach to UI structure, business workflows, and practical product implementation across different industries.
-          </p>
-        </div>
-
-        <div class="grid-2">
-          <article class="panel reveal">
-            <h3>What this showcase includes</h3>
-            <p>
-              The demo gallery includes e-commerce interfaces, hospitality websites, service business platforms, and enterprise-style dashboards. It gives a broader view of my development range beyond the two portfolio projects listed above.
-            </p>
-            <div class="chip-row">
-              <span class="chip">E-commerce demos</span>
-              <span class="chip">Hospitality websites</span>
-              <span class="chip">Service platforms</span>
-              <span class="chip">Business dashboards</span>
-              <span class="chip">Admin interfaces</span>
-              <span class="chip">UI workflows</span>
-            </div>
-          </article>
-
-          <article class="panel reveal">
-            <h3>Explore live demos</h3>
-            <p>
-              This section is designed for visitors who want to quickly browse my practical work and interface implementations. It is especially useful for clients, recruiters, and collaborators who want to see working examples instead of only reading project summaries.
-            </p>
-            <div class="hero-actions" style="margin-top: 1.25rem;">
-              <a class="btn btn-primary" href="./demo-projects/index.html">Open Sample Projects</a>
-              <a class="btn btn-secondary" href="#projects">View Portfolio Projects</a>
-            </div>
-          </article>
-        </div>
-      </section>
-
       <section id="projects">
         <div class="section-head reveal">
-          <h2>Selected projects</h2>
+          <span class="section-label">Selected work</span>
+          <h2>Projects</h2>
           <p>
-            These projects show the kind of systems I like to build: operationally useful products with strong admin workflows, customer-facing experiences, and end-to-end execution.
+            These projects reflect the type of systems I enjoy building: customer-facing products supported by strong backend workflows, operational logic, and business usability.
           </p>
         </div>
+
         <div class="projects-grid">
           <article class="project-card reveal">
-            <h3>Fresh3C - E-Commerce & Delivery Platform</h3>
+            <h3>Fresh3C — E-Commerce & Delivery Platform</h3>
             <p>
-              Built a complete e-commerce website and Android application for groceries, fresh meats, vegetables, and household essentials with order and delivery operations across Guwahati.
+              A complete e-commerce and delivery solution built for groceries, fresh meats, vegetables, and household essentials across Guwahati, combining user-facing ordering with operational management.
             </p>
             <ul>
-              <li>Implemented customer, order, inventory, and admin management modules.</li>
+              <li>Built customer, order, inventory, and admin management modules.</li>
               <li>Supported seamless order processing, delivery tracking, and business operations.</li>
+              <li>Included website and Android application components for end-to-end ordering and delivery.</li>
             </ul>
             <div class="chip-row">
               <span class="chip">Java</span>
@@ -757,20 +938,23 @@
               <span class="chip">JavaScript</span>
               <span class="chip">HTML/CSS</span>
               <span class="chip">Payment Integration</span>
+              <span class="chip">Cloud Storage</span>
             </div>
           </article>
 
           <article class="project-card reveal">
-            <h3>PharmaPlus Medicos - Pharmacy E-Commerce Web Application</h3>
+            <h3>PharmaPlus Medicos — Pharmacy E-Commerce Web Application</h3>
             <p>
-              Developed a responsive pharmacy e-commerce website for medicine browsing, ordering, and customer management with admin-focused workflows.
+              A responsive pharmacy e-commerce web application designed for medicine browsing, ordering, inventory handling, and customer-focused pharmacy operations.
             </p>
             <ul>
-              <li>Implemented inventory management and order processing flows.</li>
-              <li>Built admin dashboard features to improve pharmacy operations and customer experience.</li>
+              <li>Implemented inventory management and order processing workflows.</li>
+              <li>Built admin dashboard features to support pharmacy operations and customer experience.</li>
+              <li>Focused on usability, management flow, and operational efficiency.</li>
             </ul>
             <div class="chip-row">
               <span class="chip">JavaScript</span>
+              <span class="chip">PHP</span>
               <span class="chip">HTML</span>
               <span class="chip">CSS</span>
               <span class="chip">Web Development</span>
@@ -778,23 +962,268 @@
             </div>
           </article>
         </div>
+
+        <div class="grid-2" style="margin-top: 1.5rem;">
+          <article class="panel reveal">
+            <h3>Sample project showcase</h3>
+            <p>
+              Alongside my featured portfolio work, I maintain a broader live collection of sample projects covering business websites, e-commerce demos, dashboards, and service-oriented interfaces.
+            </p>
+            <div class="chip-row">
+              <span class="chip">E-commerce demos</span>
+              <span class="chip">Hospitality websites</span>
+              <span class="chip">Service platforms</span>
+              <span class="chip">Business dashboards</span>
+            </div>
+          </article>
+
+          <article class="panel reveal">
+            <h3>Explore more work</h3>
+            <p>
+              This additional showcase helps clients, recruiters, and collaborators quickly review practical UI work, structure, and implementation range beyond the main featured projects.
+            </p>
+            <div class="hero-actions" style="margin-top: 1.25rem;">
+              <a class="btn btn-primary" href="./demo-projects/index.html">Open Sample Projects</a>
+              <a class="btn btn-secondary" href="#contact">Discuss a project</a>
+            </div>
+          </article>
+        </div>
       </section>
 
-      <section>
+      <section id="issues">
         <div class="section-head reveal">
-          <h2>Skills and education</h2>
+          <span class="section-label">Problem solving</span>
+          <h2>Development issues & solutions</h2>
           <p>
-            My academic background in computer applications and my practical work experience support a blend of engineering depth and delivery ownership.
+            Common technical problems I’ve worked through while building and maintaining software, along with practical solutions based on real development and delivery experience.
           </p>
         </div>
+
+        <div class="issues-grid">
+          <article class="issue-card reveal">
+            <!-- <div class="issue-thumb">
+              <img src="./assets/issues-frontend.jpg" alt="Frontend debugging issue" />
+              <span class="issue-badge">Frontend</span>
+            </div> -->
+            <div class="issue-body">
+              <h3>API calls failing because of CORS restrictions</h3>
+              <p>
+                Solving browser-side request failures when frontend applications try to call external or backend APIs without the correct cross-origin configuration.
+              </p>
+              <div class="issue-meta">
+                <span>5 min read</span>
+                <span>Frontend</span>
+              </div>
+              <details class="issue-answer">
+                <summary>View solution</summary>
+                <div class="issue-answer-content">
+                  <p>
+                    This problem usually happens because the backend does not return the correct CORS headers for the requesting frontend origin.
+                  </p>
+                  <ul>
+                    <li>Allow the required origin through <code>Access-Control-Allow-Origin</code>.</li>
+                    <li>Configure allowed methods and headers properly.</li>
+                    <li>If authentication is used, set credentials support carefully on both frontend and backend.</li>
+                    <li>For local development, use a proxy instead of trying to bypass CORS in the browser.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <article class="issue-card reveal">
+            <!-- <div class="issue-thumb">
+              <img src="./assets/issues-server.jpg" alt="Server and environment issue" />
+              <span class="issue-badge">Environment</span>
+            </div> -->
+            <div class="issue-body">
+              <h3>Deployment environment issues during setup</h3>
+              <p>
+                Fixing package installation failures, permission errors, and environment-level setup issues that block local or production deployment.
+              </p>
+              <div class="issue-meta">
+                <span>4 min read</span>
+                <span>Environment</span>
+              </div>
+              <details class="issue-answer">
+                <summary>View solution</summary>
+                <div class="issue-answer-content">
+                  <p>
+                    These issues often come from permission mismatch, wrong runtime versions, or incomplete environment configuration.
+                  </p>
+                  <ul>
+                    <li>Check runtime versions such as Node, Java, PHP, or Android build tools.</li>
+                    <li>Avoid global install issues by fixing ownership or using proper package managers and local dependencies.</li>
+                    <li>Verify environment variables, file permissions, and server paths.</li>
+                    <li>Test the build step-by-step so the exact failing command is easy to isolate.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <article class="issue-card reveal">
+            <!-- <div class="issue-thumb">
+              <img src="./assets/issues-database.jpg" alt="Database issue and optimization" />
+              <span class="issue-badge">Backend</span>
+            </div> -->
+            <div class="issue-body">
+              <h3>Database connectivity and timeout problems</h3>
+              <p>
+                Debugging slow queries, failed database connections, and timeout issues in applications that depend on stable backend communication.
+              </p>
+              <div class="issue-meta">
+                <span>6 min read</span>
+                <span>Backend</span>
+              </div>
+              <details class="issue-answer">
+                <summary>View solution</summary>
+                <div class="issue-answer-content">
+                  <p>
+                    Database issues usually come from wrong credentials, blocked network access, inefficient queries, or overloaded connections.
+                  </p>
+                  <ul>
+                    <li>Verify host, port, database user, and password first.</li>
+                    <li>Check whether the server allows remote access from the deployed application.</li>
+                    <li>Optimize slow queries and add indexes where necessary.</li>
+                    <li>Review connection pooling and timeout settings for production workloads.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <article class="issue-card reveal">
+            <!-- <div class="issue-thumb">
+              <img src="./assets/issues-mobile.jpg" alt="Mobile build and packaging issue" />
+              <span class="issue-badge">Mobile</span>
+            </div> -->
+            <div class="issue-body">
+              <h3>Android or mobile build failures</h3>
+              <p>
+                Handling Gradle issues, dependency conflicts, SDK mismatch, and packaging failures that interrupt app testing or release workflows.
+              </p>
+              <div class="issue-meta">
+                <span>5 min read</span>
+                <span>Android</span>
+              </div>
+              <details class="issue-answer">
+                <summary>View solution</summary>
+                <div class="issue-answer-content">
+                  <p>
+                    Mobile build problems often come from version mismatch between dependencies, SDK tools, Gradle, or plugins.
+                  </p>
+                  <ul>
+                    <li>Check SDK version, build tools version, and Gradle compatibility.</li>
+                    <li>Clear caches and rebuild after dependency updates.</li>
+                    <li>Resolve package conflicts by aligning library versions.</li>
+                    <li>Review signing, manifest, and release configuration before generating production builds.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <article class="issue-card reveal">
+            <!-- <div class="issue-thumb">
+              <img src="./assets/issues-git.jpg" alt="Version control and merge issue" />
+              <span class="issue-badge">Version Control</span>
+            </div> -->
+            <div class="issue-body">
+              <h3>Resolving merge conflicts and code sync issues</h3>
+              <p>
+                Managing Git conflicts, branch mismatches, and team workflow issues when multiple changes affect the same codebase.
+              </p>
+              <div class="issue-meta">
+                <span>4 min read</span>
+                <span>Git</span>
+              </div>
+              <details class="issue-answer">
+                <summary>View solution</summary>
+                <div class="issue-answer-content">
+                  <p>
+                    Merge conflicts are easier to solve when changes are reviewed logically instead of only line by line.
+                  </p>
+                  <ul>
+                    <li>Pull the latest branch state before starting conflict resolution.</li>
+                    <li>Compare both sides of the conflict based on feature intent, not only syntax.</li>
+                    <li>Test the resolved code immediately after merging.</li>
+                    <li>Keep commits smaller and more focused to reduce future conflict complexity.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <article class="issue-card reveal">
+            <!-- <div class="issue-thumb">
+              <img src="./assets/issues-ui.jpg" alt="UI state and frontend issue" />
+              <span class="issue-badge">UI Logic</span>
+            </div> -->
+            <div class="issue-body">
+              <h3>Frontend state, rendering, and UI logic bugs</h3>
+              <p>
+                Fixing inconsistent UI updates, incorrect dynamic rendering, and broken interaction flows that affect user experience.
+              </p>
+              <div class="issue-meta">
+                <span>5 min read</span>
+                <span>UI/UX</span>
+              </div>
+              <details class="issue-answer">
+                <summary>View solution</summary>
+                <div class="issue-answer-content">
+                  <p>
+                    These bugs usually happen when data flow, event handling, or rendering conditions are not fully aligned.
+                  </p>
+                  <ul>
+                    <li>Trace how state changes from input to render output.</li>
+                    <li>Check whether asynchronous updates are causing stale values.</li>
+                    <li>Separate UI state from business data where possible.</li>
+                    <li>Test edge cases like empty data, delayed responses, and repeated user actions.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="skills">
+        <div class="section-head reveal">
+          <span class="section-label">Expertise</span>
+          <h2>Skills and education</h2>
+          <p>
+            My background combines formal computer applications education with practical development and leadership experience across software delivery, operations, and product execution.
+          </p>
+        </div>
+
         <div class="grid-2">
           <article class="panel reveal">
             <h3>Technical skills</h3>
             <div class="skills-grid" style="margin-top: 1.25rem;">
-              <div class="skill-card"><h3>Development</h3><p>Java, JavaScript, HTML/CSS, web development, Android development.</p></div>
-              <div class="skill-card"><h3>Systems</h3><p>Database management, application deployment, workflow design, optimization.</p></div>
-              <div class="skill-card"><h3>Delivery</h3><p>Agile software development, cross-functional collaboration, IT management and delivery.</p></div>
-              <div class="skill-card"><h3>Leadership</h3><p>Technology strategy, execution planning, coordination across teams and business needs.</p></div>
+              <div class="skill-card">
+                <h3>Development</h3>
+                <p>Java, JavaScript, HTML/CSS, web development, and Android development.</p>
+              </div>
+              <div class="skill-card">
+                <h3>Systems</h3>
+                <p>Database management, workflow design, application deployment, and operational optimization.</p>
+              </div>
+              <div class="skill-card">
+                <h3>Delivery</h3>
+                <p>Agile software development, collaboration across teams, and IT delivery planning.</p>
+              </div>
+              <div class="skill-card">
+                <h3>Leadership</h3>
+                <p>Technology strategy, execution oversight, and alignment between technical decisions and business goals.</p>
+              </div>
+            </div>
+
+            <div class="chip-row">
+              <span class="chip">English</span>
+              <span class="chip">Hindi</span>
+              <span class="chip">Telugu</span>
+              <span class="chip">Assamese</span>
             </div>
           </article>
 
@@ -802,12 +1231,12 @@
             <h3>Education</h3>
             <div class="timeline" style="margin-top: 1.25rem;">
               <article class="skill-card">
-                <div class="meta"><span>2018 - 2020</span><span>7.17 CGPA</span></div>
+                <div class="meta"><span>2018 – 2020</span><span>7.17 CGPA</span></div>
                 <h3>Master of Computer Applications (MCA)</h3>
                 <p>Assam Don Bosco University, Guwahati.</p>
               </article>
               <article class="skill-card">
-                <div class="meta"><span>2015 - 2018</span><span>7.24 CGPA</span></div>
+                <div class="meta"><span>2015 – 2018</span><span>7.24 CGPA</span></div>
                 <h3>Bachelor of Computer Applications (BCA)</h3>
                 <p>Assam Don Bosco University, Guwahati.</p>
               </article>
@@ -819,9 +1248,9 @@
       <section id="contact">
         <div class="contact-card reveal">
           <div>
-            <h2>Get in touch</h2>
+            <h2>Let’s work together.</h2>
             <p>
-              I am available for software development, technical leadership, and digital product collaboration.
+              I’m open to software development opportunities, product collaborations, and technical leadership roles where I can help build reliable and useful digital systems.
             </p>
           </div>
           <div class="contact-links">
@@ -836,7 +1265,7 @@
 
   <footer>
     <div class="container">
-      <p>A personal portfolio showcasing the experience, projects, and technical background of B Yashwant Reddy.</p>
+      <p>This portfolio presents the experience, projects, and technical background of B Yashwant Reddy.</p>
     </div>
   </footer>
 
